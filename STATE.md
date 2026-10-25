@@ -1,9 +1,9 @@
 # Current Project State
 
-- **Current Phase**: Phase 3 (Additional Models & Demand Routing - Tier P1)
+- **Current Phase**: Phase 4 (Uncertainty Quantification & Inventory Simulation - Tier P0 / N1 / N2)
 - **Current Stage**: THINK / PLAN
-- **Last Completed Task**: Phase 2 Features, Baselines, Backtest & XGBoost (84 tests passing, leakage verified, benchmark logged, tagged `phase-2-complete`).
-- **Next Action**: Execute Phase 3: ARIMA/SARIMAX, Prophet, 12-step PyTorch LSTM, Croston/TSB intermittent models, Syntetos-Boylan demand router (N3), and model stacking.
+- **Last Completed Task**: Phase 3 Additional Models & Ensembles (93 tests passing, SARIMAX, Prophet, PyTorch LSTM, Croston, TSB, Router N3, Stacking, benchmark logged, tagged `phase-3-complete`).
+- **Next Action**: Execute Phase 4: Quantile XGBoost, split conformal calibration engine, daily inventory simulator, (R, S) periodic policy, and headline cost evaluation.
 - **Open Blockers**: None. Data pipeline fully validated on synthetic dataset (and ready for real Kaggle Favorita dataset when placed).
 
 ## Environment Summary
