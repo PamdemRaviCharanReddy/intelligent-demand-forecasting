@@ -78,14 +78,16 @@ def main() -> None:
     stream_copy.loc[shock_mask, "sales"] *= 1.50  # 50% structural shock
 
     # Generate model predictions for stream
-    preds = model.predict(horizon=len(unique_dates) - len(train_df["date"].unique()), features_df=stream_copy)
-    merged_stream = pd.merge(stream_copy, preds, on=["date", *cfg.data.series_id_cols]).sort_values("date")
+    preds = model.predict(
+        horizon=len(unique_dates) - len(train_df["date"].unique()), features_df=stream_copy
+    )
+    merged_stream = pd.merge(stream_copy, preds, on=["date", *cfg.data.series_id_cols]).sort_values(
+        "date"
+    )
 
     # Group daily aggregates across stores for clean streaming surveillance
     daily_stream = (
-        merged_stream.groupby("date")
-        .agg({"sales": "mean", "forecast": "mean"})
-        .reset_index()
+        merged_stream.groupby("date").agg({"sales": "mean", "forecast": "mean"}).reset_index()
     )
 
     monitor = DriftMonitor(
@@ -114,17 +116,45 @@ def main() -> None:
     fig_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(12, 6))
-    plt.plot(daily_stream["date"], daily_stream["sales"], label="Actual Demand (Shock Injected)", color="#0f172a", lw=2)
-    plt.plot(daily_stream["date"], daily_stream["forecast"], label="Static Model Forecast", color="#2563eb", lw=1.5, ls="--")
+    plt.plot(
+        daily_stream["date"],
+        daily_stream["sales"],
+        label="Actual Demand (Shock Injected)",
+        color="#0f172a",
+        lw=2,
+    )
+    plt.plot(
+        daily_stream["date"],
+        daily_stream["forecast"],
+        label="Static Model Forecast",
+        color="#2563eb",
+        lw=1.5,
+        ls="--",
+    )
     plt.axvline(shock_date, color="#ef4444", lw=2, ls=":", label="Injected Demand Shock (+50%)")
 
     # Mark alert trigger points
     alert_dates = [a.timestamp for a in alerts]
-    alert_y = [daily_stream.loc[daily_stream["date"] == d, "sales"].values[0] for d in alert_dates if d in daily_stream["date"].values]
+    alert_y = [
+        daily_stream.loc[daily_stream["date"] == d, "sales"].values[0]
+        for d in alert_dates
+        if d in daily_stream["date"].values
+    ]
     if alert_dates:
-        plt.scatter(alert_dates[:len(alert_y)], alert_y, color="#dc2626", s=80, zorder=5, label="Drift Retrain Alert")
+        plt.scatter(
+            alert_dates[: len(alert_y)],
+            alert_y,
+            color="#dc2626",
+            s=80,
+            zorder=5,
+            label="Drift Retrain Alert",
+        )
 
-    plt.title("Production Surveillance: Automated Concept Drift Detection (Novelty N4)", fontsize=13, pad=12)
+    plt.title(
+        "Production Surveillance: Automated Concept Drift Detection (Novelty N4)",
+        fontsize=13,
+        pad=12,
+    )
     plt.xlabel("Date", fontsize=11)
     plt.ylabel("Average Sales Volume", fontsize=11)
     plt.legend(loc="upper left")
@@ -157,7 +187,9 @@ def main() -> None:
     waterfall_path = Path("reports/figures/shap_waterfall.png")
     # Find row with highest predicted sales in sample
     top_row_idx = int(np.argmax(explanation.values.sum(axis=1)))
-    explainer.plot_waterfall(explanation, row_idx=top_row_idx, save_path=waterfall_path, max_display=10)
+    explainer.plot_waterfall(
+        explanation, row_idx=top_row_idx, save_path=waterfall_path, max_display=10
+    )
     print(f"Saved local SHAP waterfall plot: {waterfall_path}")
 
     # =========================================================================
@@ -174,7 +206,9 @@ def main() -> None:
     print(f"Scenario: {promo_result.scenario_name}")
     print(f"  Baseline Total Demand: {promo_result.baseline_total_demand:,.0f} units")
     print(f"  Scenario Total Demand: {promo_result.scenario_total_demand:,.0f} units")
-    print(f"  Projected Lift: {promo_result.absolute_delta:+,.0f} units ({promo_result.percentage_change:+.2f}%)")
+    print(
+        f"  Projected Lift: {promo_result.absolute_delta:+,.0f} units ({promo_result.percentage_change:+.2f}%)"
+    )
 
 
 if __name__ == "__main__":

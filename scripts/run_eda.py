@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 
 from idfs.data.eda import generate_eda_figures
 from idfs.data.fusion import run_data_pipeline

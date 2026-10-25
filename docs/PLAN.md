@@ -106,11 +106,11 @@
 ### Phase 7: Final Evaluation, Ablations & Academic Defense (Week 8) — Tier: P0 / P2
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P7-T01** | Sealed test window evaluation | Lead Researcher | M | All Models| P0 | ⚪ PLANNED | One-time unsealing of 28-day final test set |
-| **P7-T02** | Comprehensive feature & novelty ablations| Lead Researcher | M | P7-T01 | P0 | ⚪ PLANNED | Measures performance with each novelty on/off |
-| **P7-T03** | Statistical significance hypothesis tests | Lead Researcher | S | P7-T01 | P0 | ⚪ PLANNED | Wilcoxon and Diebold-Mariano tests with $p$-values |
-| **P7-T04** | Academic report manuscript (Markdown) | Lead Author | L | P7-T02 | P0 | ⚪ PLANNED | IEEE/ACM format paper ready for submission |
-| **P7-T05** | Final slide deck & presentation outline | Lead Author | M | P7-T04 | P0 | ⚪ PLANNED | Complete presentation structure with speaker notes |
+| **P7-T01** | Sealed test window evaluation | Lead Researcher | M | All Models| P0 | ✅ DONE | One-time unsealing of 28-day final test set |
+| **P7-T02** | Comprehensive feature & novelty ablations| Lead Researcher | M | P7-T01 | P0 | ✅ DONE | Measures performance with each novelty on/off |
+| **P7-T03** | Statistical significance hypothesis tests | Lead Researcher | S | P7-T01 | P0 | ✅ DONE | Wilcoxon and Diebold-Mariano tests with $p$-values |
+| **P7-T04** | Academic report manuscript (Markdown) | Lead Author | L | P7-T02 | P0 | ✅ DONE | IEEE/ACM format paper ready for submission |
+| **P7-T05** | Final slide deck & presentation outline | Lead Author | M | P7-T04 | P0 | ✅ DONE | Complete presentation structure with speaker notes |
 | **P7-T06** | 5-Minute viva demonstration script | Lead Author | S | P6-T01 | P0 | ✅ DONE | Step-by-step interactive demo script for examiners |
-| **P7-T07** | Comprehensive Viva Q&A defense guide | Lead Author | M | P7-T04 | P0 | ⚪ PLANNED | Detailed examiner questions and rigorous answers |
-| **P7-T08** | Release tagging & final audit (`v1.0`) | Lead Architect | S | All | P0 | ⚪ PLANNED | Green build, clean git log, tagged `v1.0` |
+| **P7-T07** | Comprehensive Viva Q&A defense guide | Lead Author | M | P7-T04 | P0 | ✅ DONE | Detailed examiner questions and rigorous answers |
+| **P7-T08** | Release tagging & final audit (`v1.0`) | Lead Architect | S | All | P0 | ✅ DONE | Green build, clean git log, tagged `v1.0` |
