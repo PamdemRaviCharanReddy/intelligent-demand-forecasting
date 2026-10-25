@@ -1,9 +1,9 @@
 # Current Project State
 
-- **Current Phase**: Phase 2 (Features, Baselines, Backtest & XGBoost - P0 Core)
+- **Current Phase**: Phase 3 (Additional Models & Demand Routing - Tier P1)
 - **Current Stage**: THINK / PLAN
-- **Last Completed Task**: Phase 1 Foundation & Pipeline Engineering (ingestion, cleaning, validation, multi-source fusion, EDA figures, integration tests; tagged `phase-1-complete`).
-- **Next Action**: Execute Phase 2 Operating Loop: build leakage-free lag/rolling transformers, calendar features, baseline forecasters, expanding-window backtester, and global XGBoost.
+- **Last Completed Task**: Phase 2 Features, Baselines, Backtest & XGBoost (84 tests passing, leakage verified, benchmark logged, tagged `phase-2-complete`).
+- **Next Action**: Execute Phase 3: ARIMA/SARIMAX, Prophet, 12-step PyTorch LSTM, Croston/TSB intermittent models, Syntetos-Boylan demand router (N3), and model stacking.
 - **Open Blockers**: None. Data pipeline fully validated on synthetic dataset (and ready for real Kaggle Favorita dataset when placed).
 
 ## Environment Summary

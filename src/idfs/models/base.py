@@ -124,6 +124,7 @@ class NaiveForecaster(Forecaster):
         super().__init__(name="Naive")
         self._last_values: dict[tuple, float] = {}
         self._residual_stds: dict[tuple, float] = {}
+        self._series_id_cols: list[str] = []
 
     @property
     def supports_global(self) -> bool:
@@ -136,13 +137,12 @@ class NaiveForecaster(Forecaster):
         series_id_cols: list[str] | None = None,
         **kwargs: Any,
     ) -> NaiveForecaster:
-        series_id_cols = series_id_cols or []
-        if series_id_cols:
-            for key, group in train_df.groupby(series_id_cols):
+        self._series_id_cols = series_id_cols or []
+        if self._series_id_cols:
+            for key, group in train_df.groupby(self._series_id_cols, observed=True):
                 k = key if isinstance(key, tuple) else (key,)
                 sorted_group = group.sort_values("date")
                 self._last_values[k] = float(sorted_group[target_col].iloc[-1])
-                # Residual std for intervals: std of first differences
                 diffs = sorted_group[target_col].diff().dropna()
                 self._residual_stds[k] = float(diffs.std()) if len(diffs) > 1 else 1.0
         else:
@@ -162,15 +162,33 @@ class NaiveForecaster(Forecaster):
     ) -> pd.DataFrame:
         if not self._is_fitted:
             raise RuntimeError("Model must be fitted before predicting")
+
+        if features_df is not None and len(features_df) > 0:
+            out_df = features_df.copy()
+            forecasts = []
+            if self._series_id_cols:
+                for tup in features_df[self._series_id_cols].itertuples(index=False):
+                    k = tuple(tup)
+                    forecasts.append(self._last_values.get(k, 0.0))
+            else:
+                forecasts = [self._last_values.get((), 0.0)] * len(features_df)
+
+            res_cols = ["date"] if "date" in out_df.columns else []
+            for col in self._series_id_cols:
+                if col in out_df.columns and col not in res_cols:
+                    res_cols.append(col)
+            result = out_df[res_cols].copy() if res_cols else pd.DataFrame(index=out_df.index)
+            result["forecast"] = forecasts
+            return result
+
         rows = []
         for key, value in self._last_values.items():
             for h in range(horizon):
-                row = {"horizon_step": h + 1, "forecast": value}
-                if key:
-                    # Reconstruct series id columns
+                r_dict: dict[str, Any] = {"horizon_step": h + 1, "forecast": value}
+                if key and self._series_id_cols:
                     for i, col_val in enumerate(key):
-                        row[f"series_id_{i}"] = col_val
-                rows.append(row)
+                        r_dict[self._series_id_cols[i]] = col_val
+                rows.append(r_dict)
         return pd.DataFrame(rows)
 
     def predict_interval(
@@ -182,27 +200,25 @@ class NaiveForecaster(Forecaster):
     ) -> pd.DataFrame:
         from scipy import stats
 
-        if not self._is_fitted:
-            raise RuntimeError("Model must be fitted before predicting")
-
+        pred_df = self.predict(horizon=horizon, features_df=features_df, **kwargs)
         z = stats.norm.ppf(0.5 + coverage / 2)
-        rows = []
-        for key, value in self._last_values.items():
-            std = self._residual_stds.get(key, 1.0)
-            for h in range(horizon):
-                # Uncertainty grows with sqrt of horizon
-                width = z * std * np.sqrt(h + 1)
-                row = {
-                    "horizon_step": h + 1,
-                    "forecast": value,
-                    "lower": value - width,
-                    "upper": value + width,
-                }
-                if key:
-                    for i, col_val in enumerate(key):
-                        row[f"series_id_{i}"] = col_val
-                rows.append(row)
-        return pd.DataFrame(rows)
+
+        if self._series_id_cols and set(self._series_id_cols).issubset(set(pred_df.columns)):
+            half_widths = []
+            for tup in pred_df[self._series_id_cols].itertuples(index=False):
+                k = tuple(tup)
+                std = self._residual_stds.get(k, 1.0)
+                half_widths.append(z * std)
+            pred_df["lower"] = np.maximum(0.0, pred_df["forecast"] - np.array(half_widths))
+            pred_df["upper"] = pred_df["forecast"] + np.array(half_widths)
+        else:
+            default_std = (
+                float(np.mean(list(self._residual_stds.values()))) if self._residual_stds else 1.0
+            )
+            pred_df["lower"] = np.maximum(0.0, pred_df["forecast"] - z * default_std)
+            pred_df["upper"] = pred_df["forecast"] + z * default_std
+
+        return pred_df
 
 
 class SeasonalNaiveForecaster(Forecaster):
@@ -217,6 +233,7 @@ class SeasonalNaiveForecaster(Forecaster):
         self._seasonality = seasonality
         self._last_season: dict[tuple, np.ndarray] = {}
         self._residual_stds: dict[tuple, float] = {}
+        self._series_id_cols: list[str] = []
 
     @property
     def supports_global(self) -> bool:
@@ -229,9 +246,9 @@ class SeasonalNaiveForecaster(Forecaster):
         series_id_cols: list[str] | None = None,
         **kwargs: Any,
     ) -> SeasonalNaiveForecaster:
-        series_id_cols = series_id_cols or []
-        if series_id_cols:
-            for key, group in train_df.groupby(series_id_cols):
+        self._series_id_cols = series_id_cols or []
+        if self._series_id_cols:
+            for key, group in train_df.groupby(self._series_id_cols, observed=True):
                 k = key if isinstance(key, tuple) else (key,)
                 sorted_group = group.sort_values("date")
                 values = np.asarray(sorted_group[target_col], dtype=np.float64)
@@ -263,16 +280,43 @@ class SeasonalNaiveForecaster(Forecaster):
     ) -> pd.DataFrame:
         if not self._is_fitted:
             raise RuntimeError("Model must be fitted before predicting")
+
+        if features_df is not None and len(features_df) > 0:
+            out_df = features_df.copy()
+            forecasts = []
+            if self._series_id_cols:
+                series_counters: dict[tuple, int] = {}
+                for tup in features_df[self._series_id_cols].itertuples(index=False):
+                    k = tuple(tup)
+                    step = series_counters.get(k, 0)
+                    season_vals = self._last_season.get(k, np.array([0.0]))
+                    idx = step % self._seasonality
+                    forecasts.append(float(season_vals[idx]) if idx < len(season_vals) else 0.0)
+                    series_counters[k] = step + 1
+            else:
+                for step in range(len(features_df)):
+                    season_vals = self._last_season.get((), np.array([0.0]))
+                    idx = step % self._seasonality
+                    forecasts.append(float(season_vals[idx]) if idx < len(season_vals) else 0.0)
+
+            res_cols = ["date"] if "date" in out_df.columns else []
+            for col in self._series_id_cols:
+                if col in out_df.columns and col not in res_cols:
+                    res_cols.append(col)
+            result = out_df[res_cols].copy() if res_cols else pd.DataFrame(index=out_df.index)
+            result["forecast"] = forecasts
+            return result
+
         rows = []
         for key, season_vals in self._last_season.items():
             for h in range(horizon):
                 idx = h % self._seasonality
                 forecast = float(season_vals[idx]) if idx < len(season_vals) else 0.0
-                row = {"horizon_step": h + 1, "forecast": forecast}
-                if key:
+                r_dict: dict[str, Any] = {"horizon_step": h + 1, "forecast": forecast}
+                if key and self._series_id_cols:
                     for i, col_val in enumerate(key):
-                        row[f"series_id_{i}"] = col_val
-                rows.append(row)
+                        r_dict[self._series_id_cols[i]] = col_val
+                rows.append(r_dict)
         return pd.DataFrame(rows)
 
     def predict_interval(
@@ -284,26 +328,22 @@ class SeasonalNaiveForecaster(Forecaster):
     ) -> pd.DataFrame:
         from scipy import stats
 
-        if not self._is_fitted:
-            raise RuntimeError("Model must be fitted before predicting")
-
+        pred_df = self.predict(horizon=horizon, features_df=features_df, **kwargs)
         z = stats.norm.ppf(0.5 + coverage / 2)
-        rows = []
-        for key, season_vals in self._last_season.items():
-            std = self._residual_stds.get(key, 1.0)
-            for h in range(horizon):
-                idx = h % self._seasonality
-                forecast = float(season_vals[idx]) if idx < len(season_vals) else 0.0
-                n_cycles = h // self._seasonality + 1
-                width = z * std * np.sqrt(n_cycles)
-                row = {
-                    "horizon_step": h + 1,
-                    "forecast": forecast,
-                    "lower": forecast - width,
-                    "upper": forecast + width,
-                }
-                if key:
-                    for i, col_val in enumerate(key):
-                        row[f"series_id_{i}"] = col_val
-                rows.append(row)
-        return pd.DataFrame(rows)
+
+        if self._series_id_cols and set(self._series_id_cols).issubset(set(pred_df.columns)):
+            half_widths = []
+            for tup in pred_df[self._series_id_cols].itertuples(index=False):
+                k = tuple(tup)
+                std = self._residual_stds.get(k, 1.0)
+                half_widths.append(z * std)
+            pred_df["lower"] = np.maximum(0.0, pred_df["forecast"] - np.array(half_widths))
+            pred_df["upper"] = pred_df["forecast"] + np.array(half_widths)
+        else:
+            default_std = (
+                float(np.mean(list(self._residual_stds.values()))) if self._residual_stds else 1.0
+            )
+            pred_df["lower"] = np.maximum(0.0, pred_df["forecast"] - z * default_std)
+            pred_df["upper"] = pred_df["forecast"] + z * default_std
+
+        return pred_df

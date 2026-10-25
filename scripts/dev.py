@@ -2,12 +2,14 @@
 
 Usage:
     python scripts/dev.py check      # lint + type-check + tests
-    python scripts/dev.py lint        # ruff check + format check
-    python scripts/dev.py format      # ruff format (auto-fix)
-    python scripts/dev.py test        # pytest
-    python scripts/dev.py typecheck   # mypy
-    python scripts/dev.py generate    # generate synthetic data
-    python scripts/dev.py all         # format + check
+    python scripts/dev.py lint       # ruff check + format check
+    python scripts/dev.py format     # ruff format (auto-fix)
+    python scripts/dev.py test       # pytest
+    python scripts/dev.py typecheck  # mypy
+    python scripts/dev.py generate   # generate synthetic data
+    python scripts/dev.py eda        # run ingestion and generate EDA figures
+    python scripts/dev.py benchmark  # run Phase 2 model benchmark
+    python scripts/dev.py all        # format + check
 """
 
 from __future__ import annotations
@@ -72,6 +74,11 @@ def eda() -> int:
     return run([sys.executable, "scripts/run_eda.py"])
 
 
+def benchmark() -> int:
+    """Run Phase 2 model benchmark."""
+    return run([sys.executable, "scripts/run_benchmark.py"])
+
+
 def main() -> None:
     """Entry point."""
     commands = {
@@ -82,6 +89,7 @@ def main() -> None:
         "typecheck": typecheck,
         "generate": generate,
         "eda": eda,
+        "benchmark": benchmark,
         "all": lambda: fmt() or check(),
     }
 
