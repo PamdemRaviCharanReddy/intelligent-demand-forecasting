@@ -68,13 +68,13 @@
 ### Phase 4: Uncertainty Quantification & Inventory Simulation (Week 5) — Tier: P0 / N1 / N2
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P4-T01** | Quantile XGBoost implementation | ML Engineer | M | P2-T06 | P0/N2 | ⚪ PLANNED | Predicts $\tau \in \{0.05, 0.50, 0.95\}$ quantiles |
-| **P4-T02** | Split conformal calibration engine | Researcher | M | P4-T01 | P0/N2 | ⚪ PLANNED | Adjusts bounds to satisfy empirical nominal coverage |
-| **P4-T03** | Daily inventory simulation engine | Software Eng | M | P0-T09 | P0/N1 | ⚪ PLANNED | Steps through daily receipts, sales, stockouts |
-| **P4-T04** | Periodic Review $(R, S)$ policy | Software Eng | M | P4-T03 | P0/N1 | ⚪ PLANNED | Computes safety stock from forecast uncertainty |
-| **P4-T05** | Naive moving average policy benchmark | Software Eng | S | P4-T03 | P0/N1 | ⚪ PLANNED | Implements historical moving average reorder rule |
-| **P4-T06** | Cost simulation & fill-rate evaluation | Researcher | M | P4-T04 | P0/N1 | ⚪ PLANNED | Generates headline holding vs stockout cost table |
-| **P4-T07** | Lead time & cost ratio sensitivity grid | Researcher | M | P4-T06 | P0/N1 | ⚪ PLANNED | Sensitivity sweeps across $L \in [2, 7]$ and $c_s/c_h$ |
+| **P4-T01** | Quantile XGBoost implementation | ML Engineer | M | P2-T06 | P0/N2 | ✅ DONE | Predicts $\tau \in \{0.05, 0.50, 0.95\}$ quantiles |
+| **P4-T02** | Split conformal calibration engine | Researcher | M | P4-T01 | P0/N2 | ✅ DONE | Adjusts bounds to satisfy empirical nominal coverage |
+| **P4-T03** | Daily inventory simulation engine | Software Eng | M | P0-T09 | P0/N1 | ✅ DONE | Steps through daily receipts, sales, stockouts |
+| **P4-T04** | Periodic Review $(R, S)$ policy | Software Eng | M | P4-T03 | P0/N1 | ✅ DONE | Computes safety stock from forecast uncertainty |
+| **P4-T05** | Naive moving average policy benchmark | Software Eng | S | P4-T03 | P0/N1 | ✅ DONE | Implements historical moving average reorder rule |
+| **P4-T06** | Cost simulation & fill-rate evaluation | Researcher | M | P4-T04 | P0/N1 | ✅ DONE | Generates headline holding vs stockout cost table |
+| **P4-T07** | Lead time & cost ratio sensitivity grid | Researcher | M | P4-T06 | P0/N1 | ✅ DONE | Sensitivity sweeps across $L \in [2, 7]$ and $c_s/c_h$ |
 
 ---
 

@@ -1,9 +1,9 @@
 # Current Project State
 
-- **Current Phase**: Phase 4 (Uncertainty Quantification & Inventory Simulation - Tier P0 / N1 / N2)
+- **Current Phase**: Phase 5 (Monitoring & Explainability - Tier P1 / N4 / N5)
 - **Current Stage**: THINK / PLAN
-- **Last Completed Task**: Phase 3 Additional Models & Ensembles (93 tests passing, SARIMAX, Prophet, PyTorch LSTM, Croston, TSB, Router N3, Stacking, benchmark logged, tagged `phase-3-complete`).
-- **Next Action**: Execute Phase 4: Quantile XGBoost, split conformal calibration engine, daily inventory simulator, (R, S) periodic policy, and headline cost evaluation.
+- **Last Completed Task**: Phase 4 Uncertainty Quantification & Inventory Simulation (100 tests passing, Quantile XGBoost, Split Conformal CQR, discrete-event Simulator, cost & sensitivity sweeps, tagged `phase-4-complete`).
+- **Next Action**: Execute Phase 5: Rolling-error drift monitor (N4), concept drift detection demo, Tree-SHAP feature importance (N5), and What-If scenario engine.
 - **Open Blockers**: None. Data pipeline fully validated on synthetic dataset (and ready for real Kaggle Favorita dataset when placed).
 
 ## Environment Summary
