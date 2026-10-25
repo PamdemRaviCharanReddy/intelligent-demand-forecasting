@@ -1,10 +1,10 @@
 # Current Project State
 
-- **Current Phase**: Phase 0 (Discovery, Scope, Architecture & Skeleton)
-- **Current Stage**: VERIFY / GATE (Preparing Phase 0 Documentation and Testing Skeleton)
-- **Last Completed Task**: Created baseline code stubs, config system, evaluation metrics, synthetic generator, tests, and core project setup.
-- **Next Action**: Complete all Phase 0 architectural documents, run test suite, push/commit to git, and present Phase 0 Human Gate.
-- **Open Blockers**: None blocking Phase 0 completion. Kaggle API credentials and GitHub CLI absent (handled with documented fallbacks).
+- **Current Phase**: Phase 2 (Features, Baselines, Backtest & XGBoost - P0 Core)
+- **Current Stage**: THINK / PLAN
+- **Last Completed Task**: Phase 1 Foundation & Pipeline Engineering (ingestion, cleaning, validation, multi-source fusion, EDA figures, integration tests; tagged `phase-1-complete`).
+- **Next Action**: Execute Phase 2 Operating Loop: build leakage-free lag/rolling transformers, calendar features, baseline forecasters, expanding-window backtester, and global XGBoost.
+- **Open Blockers**: None. Data pipeline fully validated on synthetic dataset (and ready for real Kaggle Favorita dataset when placed).
 
 ## Environment Summary
 - **OS**: Windows 11 (NT 10.0.26300.0), PowerShell

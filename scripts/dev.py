@@ -67,6 +67,11 @@ def generate() -> int:
     return run([sys.executable, "-m", "idfs.cli", "generate"])
 
 
+def eda() -> int:
+    """Run data ingestion and generate EDA figures."""
+    return run([sys.executable, "scripts/run_eda.py"])
+
+
 def main() -> None:
     """Entry point."""
     commands = {
@@ -76,6 +81,7 @@ def main() -> None:
         "test": test,
         "typecheck": typecheck,
         "generate": generate,
+        "eda": eda,
         "all": lambda: fmt() or check(),
     }
 
