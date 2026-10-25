@@ -92,14 +92,14 @@
 ### Phase 6: Streamlit Application & Reporting (Week 7) — Tier: P0
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P6-T01** | Multi-page Streamlit application core | Frontend Eng | M | P0-T06 | P0 | ⚪ PLANNED | Modular page navigation and state caching |
-| **P6-T02** | Data Explorer & EDA page | Frontend Eng | S | P1-T05 | P0 | ⚪ PLANNED | Upload CSV/Excel, summary statistics, missing flags |
-| **P6-T03** | Forecast Studio page | Frontend Eng | M | P2-T06 | P0 | ⚪ PLANNED | Interactive forecast plotting with interval bands |
-| **P6-T04** | Inventory Replenishment & Alerts page | Frontend Eng | M | P4-T06 | P0 | ⚪ PLANNED | Displays order quantities, reorder points, stockout risk |
-| **P6-T05** | Drift Monitor & Explainability page | Frontend Eng | M | P5-T03 | P1 | ⚪ PLANNED | Renders rolling error charts and SHAP plots |
-| **P6-T06** | SQLite persistent run storage | Software Eng | S | P6-T01 | P0 | ⚪ PLANNED | Stores user scenarios and historical runs |
-| **P6-T07** | Automated downloadable report builder | Software Eng | M | P6-T01 | P0 | ⚪ PLANNED | Exports executive HTML/CSV summary reports |
-| **P6-T08** | Headless smoke tests for app | QA Engineer | S | P6-T01 | P0 | ⚪ PLANNED | Automated test ensuring pages load without exception |
+| **P6-T01** | Multi-page Streamlit application core | Frontend Eng | M | P0-T06 | P0 | ✅ DONE | Modular page navigation and state caching |
+| **P6-T02** | Data Explorer & EDA page | Frontend Eng | S | P1-T05 | P0 | ✅ DONE | Upload CSV/Excel, summary statistics, missing flags |
+| **P6-T03** | Forecast Studio page | Frontend Eng | M | P2-T06 | P0 | ✅ DONE | Interactive forecast plotting with interval bands |
+| **P6-T04** | Inventory Replenishment & Alerts page | Frontend Eng | M | P4-T06 | P0 | ✅ DONE | Displays order quantities, reorder points, stockout risk |
+| **P6-T05** | Drift Monitor & Explainability page | Frontend Eng | M | P5-T03 | P1 | ✅ DONE | Renders rolling error charts and SHAP plots |
+| **P6-T06** | SQLite persistent run storage | Software Eng | S | P6-T01 | P0 | ✅ DONE | Stores user scenarios and historical runs |
+| **P6-T07** | Automated downloadable report builder | Software Eng | M | P6-T01 | P0 | ✅ DONE | Exports executive HTML/CSV summary reports |
+| **P6-T08** | Headless smoke tests for app | QA Engineer | S | P6-T01 | P0 | ✅ DONE | Automated test ensuring pages load without exception |
 
 ---
 
@@ -111,6 +111,6 @@
 | **P7-T03** | Statistical significance hypothesis tests | Lead Researcher | S | P7-T01 | P0 | ⚪ PLANNED | Wilcoxon and Diebold-Mariano tests with $p$-values |
 | **P7-T04** | Academic report manuscript (Markdown) | Lead Author | L | P7-T02 | P0 | ⚪ PLANNED | IEEE/ACM format paper ready for submission |
 | **P7-T05** | Final slide deck & presentation outline | Lead Author | M | P7-T04 | P0 | ⚪ PLANNED | Complete presentation structure with speaker notes |
-| **P7-T06** | 5-Minute viva demonstration script | Lead Author | S | P6-T01 | P0 | ⚪ PLANNED | Step-by-step interactive demo script for examiners |
+| **P7-T06** | 5-Minute viva demonstration script | Lead Author | S | P6-T01 | P0 | ✅ DONE | Step-by-step interactive demo script for examiners |
 | **P7-T07** | Comprehensive Viva Q&A defense guide | Lead Author | M | P7-T04 | P0 | ⚪ PLANNED | Detailed examiner questions and rigorous answers |
 | **P7-T08** | Release tagging & final audit (`v1.0`) | Lead Architect | S | All | P0 | ⚪ PLANNED | Green build, clean git log, tagged `v1.0` |
