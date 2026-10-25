@@ -4,9 +4,9 @@
 
 | Phase | Title | Tier | Status | Exit Gate | Notes |
 |:---|:---|:---|:---|:---|:---|
-| **Phase 0** | Discovery, Scope & Architecture | P0 | 🟡 IN PROGRESS | Human Gate | Deep design, skeleton, stubs, tests, contracts |
-| **Phase 1** | Foundation & Pipeline Engineering | P0 | ⚪ PLANNED | Auto Gate | Ingestion, validation, cleaning, fusion, EDA |
-| **Phase 2** | Features, Baselines & XGBoost | P0 | ⚪ PLANNED | Auto Gate | Lags, rolling, calendar, walk-forward CV, XGBoost |
+| **Phase 0** | Discovery, Scope & Architecture | P0 | 🟢 COMPLETED | Human Gate | Deep design, skeleton, stubs, tests, contracts (Tag: phase-0-complete) |
+| **Phase 1** | Foundation & Pipeline Engineering | P0 | 🟢 COMPLETED | Auto Gate | Ingestion, validation, cleaning, fusion, EDA (Tag: phase-1-complete) |
+| **Phase 2** | Features, Baselines & XGBoost | P0 | 🟡 IN PROGRESS | Auto Gate | Lags, rolling, calendar, walk-forward CV, XGBoost |
 | **Phase 3** | Additional Models & Ensembles | P1 | ⚪ PLANNED | Auto Gate | ARIMA, Prophet, PyTorch LSTM, Croston, Router |
 | **Phase 4** | Uncertainty & Inventory Simulation | P0/N1/N2 | ⚪ PLANNED | Auto Gate | Quantile regression, conformal, cost simulation |
 | **Phase 5** | Monitoring & Explainability | P1/N4/N5 | ⚪ PLANNED | Auto Gate | Rolling error drift detector, SHAP, What-If |

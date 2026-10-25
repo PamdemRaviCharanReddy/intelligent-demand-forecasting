@@ -30,12 +30,12 @@
 ### Phase 1: Foundation & Data Engineering (Week 2) — Tier: P0
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P1-T01** | Data ingestion module (CSV / Parquet) | Data Eng | S | P0-T09 | P0 | ⚪ PLANNED | Reads sales, metadata, external regressors |
-| **P1-T02** | Schema validation & quality asserts | Data Eng | S | P1-T01 | P0 | ⚪ PLANNED | Rejects negative sales, flags nulls & gaps |
-| **P1-T03** | Data cleaning & outlier mitigation | Data Eng | M | P1-T02 | P0 | ⚪ PLANNED | Imputes missing dates; winsorizes anomalies |
-| **P1-T04** | Multi-source fusion engine | Data Eng | M | P1-T03 | P0 | ⚪ PLANNED | Joins sales, stores, holidays, oil; graceful fallback |
-| **P1-T05** | Exploratory Data Analysis (EDA) script | Data Eng | M | P1-T04 | P0 | ⚪ PLANNED | Auto-generates figures into `reports/figures/eda/` |
-| **P1-T06** | End-to-end data pipeline integration test| QA Engineer | S | P1-T04 | P0 | ⚪ PLANNED | Test validates ingestion $\to$ fusion on synthetic data |
+| **P1-T01** | Data ingestion module (CSV / Parquet) | Data Eng | S | P0-T09 | P0 | ✅ DONE | Reads sales, metadata, external regressors |
+| **P1-T02** | Schema validation & quality asserts | Data Eng | S | P1-T01 | P0 | ✅ DONE | Rejects negative sales, flags nulls & gaps |
+| **P1-T03** | Data cleaning & outlier mitigation | Data Eng | M | P1-T02 | P0 | ✅ DONE | Imputes missing dates; winsorizes anomalies |
+| **P1-T04** | Multi-source fusion engine | Data Eng | M | P1-T03 | P0 | ✅ DONE | Joins sales, stores, holidays, oil; graceful fallback |
+| **P1-T05** | Exploratory Data Analysis (EDA) script | Data Eng | M | P1-T04 | P0 | ✅ DONE | Auto-generates figures into `reports/figures/eda/` |
+| **P1-T06** | End-to-end data pipeline integration test| QA Engineer | S | P1-T04 | P0 | ✅ DONE | Test validates ingestion $\to$ fusion on synthetic data |
 
 ---
 
