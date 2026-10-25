@@ -9,8 +9,8 @@
 | **Phase 2** | Features, Baselines & XGBoost | P0 | 🟢 COMPLETED | Auto Gate | Lags, rolling, calendar, walk-forward CV, XGBoost (Tag: phase-2-complete) |
 | **Phase 3** | Additional Models & Ensembles | P1 | 🟢 COMPLETED | Auto Gate | ARIMA, Prophet, PyTorch LSTM, Croston, Router (Tag: phase-3-complete) |
 | **Phase 4** | Uncertainty & Inventory Simulation | P0/N1/N2 | 🟢 COMPLETED | Auto Gate | Quantile regression, conformal, cost simulation (Tag: phase-4-complete) |
-| **Phase 5** | Monitoring & Explainability | P1/N4/N5 | 🟡 IN PROGRESS | Auto Gate | Rolling error drift detector, SHAP, What-If |
-| **Phase 6** | Streamlit App & Reporting | P0 | ⚪ PLANNED | Auto Gate | Interactive dashboard, SQLite run storage, reports |
+| **Phase 5** | Monitoring & Explainability | P1/N4/N5 | 🟢 COMPLETED | Auto Gate | Rolling error drift detector, SHAP, What-If (Tag: phase-5-complete) |
+| **Phase 6** | Streamlit App & Reporting | P0 | 🟡 IN PROGRESS | Auto Gate | Interactive dashboard, SQLite run storage, reports |
 | **Phase 7** | Final Evaluation, Ablations & Viva | P0/P2 | ⚪ PLANNED | Human Gate | Test window evaluation, paper report, presentation |
 
 ---

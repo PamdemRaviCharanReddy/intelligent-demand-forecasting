@@ -81,11 +81,11 @@
 ### Phase 5: Monitoring & Explainability (Week 6) — Tier: P1 / N4 / N5
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P5-T01** | Rolling-error drift monitor (N4) | ML Engineer | M | P2-T06 | P1/N4 | ⚪ PLANNED | Computes rolling MAE/WAPE; triggers alert on threshold |
-| **P5-T02** | Simulated & real drift demonstration | Researcher | M | P5-T01 | P1/N4 | ⚪ PLANNED | Verifies detection on injected concept drift dataset |
-| **P5-T03** | Global SHAP feature importance (N5) | ML Engineer | M | P2-T06 | P1/N5 | ⚪ PLANNED | Generates summary bee-swarm and bar attribution plots |
-| **P5-T04** | Local SHAP single-prediction waterfall | ML Engineer | S | P5-T03 | P1/N5 | ⚪ PLANNED | Visualizes drivers of individual peak sales days |
-| **P5-T05** | Interactive What-If simulator (N5) | Software Eng | M | P5-T03 | P2/N5 | ⚪ PLANNED | Dynamic price/promotion slider testing demand shock |
+| **P5-T01** | Rolling-error drift monitor (N4) | ML Engineer | M | P2-T06 | P1/N4 | ✅ DONE | Computes rolling MAE/WAPE; triggers alert on threshold |
+| **P5-T02** | Simulated & real drift demonstration | Researcher | M | P5-T01 | P1/N4 | ✅ DONE | Verifies detection on injected concept drift dataset |
+| **P5-T03** | Global SHAP feature importance (N5) | ML Engineer | M | P2-T06 | P1/N5 | ✅ DONE | Generates summary bee-swarm and bar attribution plots |
+| **P5-T04** | Local SHAP single-prediction waterfall | ML Engineer | S | P5-T03 | P1/N5 | ✅ DONE | Visualizes drivers of individual peak sales days |
+| **P5-T05** | Interactive What-If simulator (N5) | Software Eng | M | P5-T03 | P2/N5 | ✅ DONE | Dynamic price/promotion slider testing demand shock |
 
 ---
 
