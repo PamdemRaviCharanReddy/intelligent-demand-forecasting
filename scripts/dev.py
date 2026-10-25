@@ -23,9 +23,9 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def run(cmd: list[str], check: bool = True) -> int:
     """Run a command and return its exit code."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  Running: {' '.join(cmd)}")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
     result = subprocess.run(cmd, cwd=str(ROOT))
     if check and result.returncode != 0:
         print(f"\n[FAILED]: {' '.join(cmd)}")

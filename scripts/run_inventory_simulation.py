@@ -79,7 +79,9 @@ def main() -> None:
     cal_df = df[(df["date"] > train_end) & (df["date"] <= cal_end)].copy()
     eval_df = df[df["date"] > cal_end].copy()
 
-    print(f"Split sizes: Train={len(train_df)} rows, Cal={len(cal_df)} rows, Eval={len(eval_df)} rows.")
+    print(
+        f"Split sizes: Train={len(train_df)} rows, Cal={len(cal_df)} rows, Eval={len(eval_df)} rows."
+    )
 
     # 1. Fit Quantile XGBoost on Train
     print("Fitting Quantile XGBoost forecaster on training split...")
@@ -106,7 +108,9 @@ def main() -> None:
     naive_forecaster.fit(train_df, series_id_cols=list(cfg.data.series_id_cols))
     naive_preds = naive_forecaster.predict(horizon=test_days, features_df=eval_df)
 
-    avg_demand_per_series = train_df.groupby(list(cfg.data.series_id_cols), observed=True)["sales"].mean().mean()
+    avg_demand_per_series = (
+        train_df.groupby(list(cfg.data.series_id_cols), observed=True)["sales"].mean().mean()
+    )
 
     # 4. Define Competing Policies
     lead_time = cfg.inventory.lead_time_days
@@ -117,22 +121,34 @@ def main() -> None:
 
     policies = [
         (
-            NaivePolicy(avg_daily_demand=float(avg_demand_per_series), lead_time=lead_time, review_period=review_period),
+            NaivePolicy(
+                avg_daily_demand=float(avg_demand_per_series),
+                lead_time=lead_time,
+                review_period=review_period,
+            ),
             naive_preds,
             "forecast",
         ),
         (
-            ForecastDrivenPolicy(service_level=0.50, review_period=review_period, name="PointForecast-ZeroSafetyStock"),
+            ForecastDrivenPolicy(
+                service_level=0.50,
+                review_period=review_period,
+                name="PointForecast-ZeroSafetyStock",
+            ),
             conformal_intervals,
             "forecast",
         ),
         (
-            ForecastDrivenPolicy(service_level=0.95, review_period=review_period, name="Gaussian-(R,S)-SL95%"),
+            ForecastDrivenPolicy(
+                service_level=0.95, review_period=review_period, name="Gaussian-(R,S)-SL95%"
+            ),
             conformal_intervals,
             "forecast",
         ),
         (
-            ConformalQuantilePolicy(review_period=review_period, name="ConformalQuantile-(R,S)-N1+N2"),
+            ConformalQuantilePolicy(
+                review_period=review_period, name="ConformalQuantile-(R,S)-N1+N2"
+            ),
             conformal_intervals,
             "upper",
         ),
@@ -195,12 +211,16 @@ def main() -> None:
             # Compare Conformal Quantile vs Gaussian Policy
             for pol, p_df, u_col in [
                 (
-                    ForecastDrivenPolicy(service_level=0.95, review_period=review_period, name="Gaussian-SL95%"),
+                    ForecastDrivenPolicy(
+                        service_level=0.95, review_period=review_period, name="Gaussian-SL95%"
+                    ),
                     conformal_intervals,
                     "forecast",
                 ),
                 (
-                    ConformalQuantilePolicy(review_period=review_period, name="ConformalQuantile-CQR"),
+                    ConformalQuantilePolicy(
+                        review_period=review_period, name="ConformalQuantile-CQR"
+                    ),
                     conformal_intervals,
                     "upper",
                 ),
