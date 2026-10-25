@@ -120,7 +120,7 @@ class NaiveForecaster(Forecaster):
     The simplest possible baseline — any useful model must beat this.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, name: str = "Naive") -> None:
         super().__init__(name="Naive")
         self._last_values: dict[tuple, float] = {}
         self._residual_stds: dict[tuple, float] = {}
@@ -228,8 +228,8 @@ class SeasonalNaiveForecaster(Forecaster):
     For daily data with weekly seasonality, predicts using values from 7 days ago.
     """
 
-    def __init__(self, seasonality: int = 7) -> None:
-        super().__init__(name=f"SeasonalNaive-{seasonality}")
+    def __init__(self, seasonality: int = 7, name: str | None = None) -> None:
+        super().__init__(name=name or f"SeasonalNaive-{seasonality}")
         self._seasonality = seasonality
         self._last_season: dict[tuple, np.ndarray] = {}
         self._residual_stds: dict[tuple, float] = {}

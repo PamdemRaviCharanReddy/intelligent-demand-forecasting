@@ -55,13 +55,13 @@
 ### Phase 3: Additional Models & Demand Routing (Week 4) — Tier: P1
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P3-T01** | Classical ARIMA / SARIMA wrapper | ML Engineer | M | P2-T05 | P1 | ⚪ PLANNED | Fits per-series ARIMA on 20–50 series subset |
-| **P3-T02** | Additive Prophet forecaster | ML Engineer | M | P2-T05 | P1 | ⚪ PLANNED | Decomposes trend, holidays, weekly seasonality |
-| **P3-T03** | 12-Step PyTorch LSTM model | Deep Learning | L | P2-T05 | P1 | ⚪ PLANNED | Windowed sequence modeling; train-only MinMax scaling |
-| **P3-T04** | Intermittent Croston & TSB forecaster | ML Engineer | M | P2-T05 | P1 | ⚪ PLANNED | Models inter-arrival times and demand sizes |
-| **P3-T05** | Demand-pattern router (N3) | Researcher | M | P3-T04 | P1 | ⚪ PLANNED | Classifies ADI vs $CV^2$; routes to best model family |
-| **P3-T06** | Stacking / Weighted Ensemble | ML Engineer | S | P3-T05 | P1 | ⚪ PLANNED | Combines candidate forecasts via validation weights |
-| **P3-T07** | Comprehensive model comparison report | Researcher | S | P3-T06 | P1 | ⚪ PLANNED | Multi-model evaluation table across all metrics |
+| **P3-T01** | Classical ARIMA / SARIMA wrapper | ML Engineer | M | P2-T05 | P1 | ✅ DONE | Fits per-series ARIMA on 20–50 series subset |
+| **P3-T02** | Additive Prophet forecaster | ML Engineer | M | P2-T05 | P1 | ✅ DONE | Decomposes trend, holidays, weekly seasonality |
+| **P3-T03** | 12-Step PyTorch LSTM model | Deep Learning | L | P2-T05 | P1 | ✅ DONE | Windowed sequence modeling; train-only MinMax scaling |
+| **P3-T04** | Intermittent Croston & TSB forecaster | ML Engineer | M | P2-T05 | P1 | ✅ DONE | Models inter-arrival times and demand sizes |
+| **P3-T05** | Demand-pattern router (N3) | Researcher | M | P3-T04 | P1 | ✅ DONE | Classifies ADI vs $CV^2$; routes to best model family |
+| **P3-T06** | Stacking / Weighted Ensemble | ML Engineer | S | P3-T05 | P1 | ✅ DONE | Combines candidate forecasts via validation weights |
+| **P3-T07** | Comprehensive model comparison report | Researcher | S | P3-T06 | P1 | ✅ DONE | Multi-model evaluation table across all metrics |
 
 ---
 
