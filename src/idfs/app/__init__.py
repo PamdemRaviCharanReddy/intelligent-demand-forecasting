@@ -1,1 +1,1 @@
-"""Streamlit application."""
+"""Streamlit Application Package."""
