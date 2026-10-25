@@ -42,13 +42,13 @@
 ### Phase 2: Feature Engineering, Baselines & XGBoost (Week 3) — Tier: P0
 | Task ID | Task Description | Owner Role | Size | Dep | Tier | Status | Definition of Done |
 |:---|:---|:---|:---:|:---:|:---:|:---:|:---|
-| **P2-T01** | Leakage-free lag & rolling transformers | ML Engineer | M | P1-T04 | P0 | ⚪ PLANNED | Implements `.shift(1)` rolling stats; passes leakage tests |
-| **P2-T02** | Calendar, cyclical & holiday distance | ML Engineer | S | P2-T01 | P0 | ⚪ PLANNED | Encodes cyclical DOW/DOY and holiday deltas |
-| **P2-T03** | Categorical encoding (Target/Entity) | ML Engineer | S | P2-T01 | P0 | ⚪ PLANNED | Fits encodings strictly on train folds |
-| **P2-T04** | Naive & Seasonal Naive forecasters | ML Engineer | S | P0-T09 | P0 | ⚪ PLANNED | Implements baseline predictions and scale references |
-| **P2-T05** | Walk-forward cross-validation harness | ML Engineer | M | P2-T01 | P0 | ⚪ PLANNED | Evaluates models across 3 rolling-origin folds |
-| **P2-T06** | Global XGBoost forecaster | ML Engineer | M | P2-T05 | P0 | ⚪ PLANNED | Cross-series gradient booster with early stopping |
-| **P2-T07** | Baseline vs XGBoost comparison table | Researcher | S | P2-T06 | P0 | ⚪ PLANNED | Generates first comparative metrics CSV in `reports/tables/` |
+| **P2-T01** | Leakage-free lag & rolling transformers | ML Engineer | M | P1-T04 | P0 | ✅ DONE | Implements `.shift(1)` rolling stats; passes leakage tests |
+| **P2-T02** | Calendar, cyclical & holiday distance | ML Engineer | S | P2-T01 | P0 | ✅ DONE | Encodes cyclical DOW/DOY and holiday deltas |
+| **P2-T03** | Categorical encoding (Target/Entity) | ML Engineer | S | P2-T01 | P0 | ✅ DONE | Fits encodings strictly on train folds |
+| **P2-T04** | Naive & Seasonal Naive forecasters | ML Engineer | S | P0-T09 | P0 | ✅ DONE | Implements baseline predictions and scale references |
+| **P2-T05** | Walk-forward cross-validation harness | ML Engineer | M | P2-T01 | P0 | ✅ DONE | Evaluates models across 3 rolling-origin folds |
+| **P2-T06** | Global XGBoost forecaster | ML Engineer | M | P2-T05 | P0 | ✅ DONE | Cross-series gradient booster with early stopping |
+| **P2-T07** | Baseline vs XGBoost comparison table | Researcher | S | P2-T06 | P0 | ✅ DONE | Generates first comparative metrics CSV in `reports/tables/` |
 
 ---
 
