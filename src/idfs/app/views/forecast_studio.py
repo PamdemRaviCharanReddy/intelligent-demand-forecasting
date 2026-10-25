@@ -1,4 +1,4 @@
-"""Forecast Studio View (P6-T03)."""
+"""Forecast Studio View (P6-T03) with interactive model comparison and interval styling."""
 
 from __future__ import annotations
 
@@ -11,46 +11,106 @@ import streamlit as st
 
 
 def render_forecast_studio() -> None:
-    """Render the Forecast Studio page."""
+    """Render the Forecast Studio page with interactive forecast plotting and interval ribbons."""
     st.header("Forecast Studio & Multi-Model Evaluation")
-    st.markdown(
-        "Generate point forecasts, inspect calibrated confidence intervals, and compare model architectures."
+    st.caption(
+        "Generate point forecasts, inspect calibrated confidence intervals, and benchmark model architectures."
     )
 
-    # 1. Model Leaderboard
-    table_p = Path("reports/tables/phase3_model_comparison.csv")
-    if table_p.exists():
-        comp_df = pd.read_csv(table_p)
-        st.subheader("Benchmark Leaderboard (3-Fold Walk-Forward CV)")
-        st.dataframe(
-            comp_df.style.highlight_min(
-                subset=["mae_mean", "rmse_mean", "wape_mean", "mase_mean"], color="#dcfce7"
-            ).format(precision=3),
-            use_container_width=True,
-        )
-    else:
-        st.info("Run `python scripts/run_benchmark.py` to view full comparative leaderboard.")
-
-    st.subheader("Interactive Forecast Inspection")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        model_choice = st.selectbox(
-            "Selected Forecaster:",
+    # 1. Model Leaderboards (Collapsible Expander)
+    with st.expander("🏆 Model Performance Leaderboards (Click to open/close)", expanded=False):
+        lb_choice = st.radio(
+            "Select Leaderboard View:",
             [
-                "DemandPatternRouter (N3)",
-                "PyTorch-LSTM",
-                "TSB (Intermittent)",
-                "Croston (SBA)",
-                "WeightedEnsemble",
-                "XGBoost-global",
-                "SeasonalNaive-7",
-                "SARIMAX(1,0,0)x(0,1,0)7",
+                "Held-Out 28-Day Sealed Test Window (Phase 7)",
+                "3-Fold Walk-Forward Cross-Validation (Phase 3)",
             ],
+            horizontal=True,
+            help="ℹ️ Compare performance on the final untouched test set versus historical cross-validation folds.",
         )
-    with c2:
-        horizon = st.slider("Forecast Horizon (Days):", min_value=7, max_value=28, value=14, step=7)
-    with c3:
-        coverage = st.selectbox("Interval Confidence:", [0.80, 0.90, 0.95], index=1)
+        if "Sealed Test" in lb_choice:
+            table_final_p = Path("reports/tables/final_model_evaluation.csv")
+            if table_final_p.exists():
+                comp_final_df = pd.read_csv(table_final_p)
+                st.dataframe(
+                    comp_final_df.style.highlight_min(
+                        subset=["mae", "rmse", "wape", "mase"], color="#dcfce7"
+                    ).format(precision=3),
+                    use_container_width=True,
+                )
+            else:
+                st.info(
+                    "Run `python scripts/run_final_evaluation.py` to generate final test table."
+                )
+        else:
+            table_p = Path("reports/tables/phase3_model_comparison.csv")
+            if table_p.exists():
+                comp_df = pd.read_csv(table_p)
+                st.dataframe(
+                    comp_df.style.highlight_min(
+                        subset=["mae_mean", "rmse_mean", "wape_mean", "mase_mean"], color="#dcfce7"
+                    ).format(precision=3),
+                    use_container_width=True,
+                )
+            else:
+                st.info(
+                    "Run `python scripts/run_benchmark.py` to view full comparative leaderboard."
+                )
+
+    # 2. Interactive Forecast Inspection Controls
+    with st.expander("⚙️ Forecast & Scenario Controls (Click to open/close)", expanded=True):
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            model_choice = st.selectbox(
+                "Forecasting Algorithm:",
+                [
+                    "DemandPatternRouter (N3)",
+                    "PyTorch-LSTM",
+                    "TSB (Intermittent Specialist)",
+                    "Croston (SBA)",
+                    "WeightedEnsemble",
+                    "XGBoost-global",
+                    "SeasonalNaive-7",
+                    "SARIMAX(1,0,0)x(0,1,0)7",
+                ],
+                help="ℹ️ Choose candidate model. Intermittent items benefit from TSB/Croston; seasonal series benefit from LSTM/SARIMAX.",
+            )
+        with c2:
+            horizon = st.slider(
+                "Forecast Horizon (Days):",
+                min_value=7,
+                max_value=28,
+                value=14,
+                step=7,
+                help="ℹ️ Forward-looking prediction window in days.",
+            )
+        with c3:
+            coverage = st.selectbox(
+                "Conformal Interval Confidence:",
+                [0.80, 0.90, 0.95],
+                index=1,
+                help="ℹ️ Nominal target coverage for calibrated prediction interval ribbons.",
+            )
+
+    # 3. Chart Customization Controls
+    with st.expander("🎨 Chart Visual Options", expanded=False):
+        vc1, vc2, vc3 = st.columns(3)
+        with vc1:
+            show_history = st.checkbox(
+                "Show 60-Day Historical Actuals",
+                value=True,
+                help="ℹ️ Toggle trailing history trace.",
+            )
+        with vc2:
+            show_ribbon = st.checkbox(
+                "Show Calibrated Interval Ribbon", value=True, help="ℹ️ Toggle uncertainty band."
+            )
+        with vc3:
+            line_palette = st.selectbox(
+                "Forecast Line Style:",
+                ["Solid Blue", "Dashed Amber", "Dotted Emerald"],
+                help="ℹ️ Visual styling.",
+            )
 
     # Load data sample for interactive plotting
     data_p = Path("data/processed/fused_sales.parquet")
@@ -79,14 +139,15 @@ def render_forecast_studio() -> None:
         fig = go.Figure()
 
         # Historical Actuals
-        fig.add_trace(
-            go.Scatter(
-                x=history["date"],
-                y=history["sales"],
-                name="Historical Actuals",
-                line=dict(color="#64748b", width=2),
+        if show_history:
+            fig.add_trace(
+                go.Scatter(
+                    x=history["date"],
+                    y=history["sales"],
+                    name="Historical Actuals",
+                    line=dict(color="#64748b", width=2),
+                )
             )
-        )
 
         # Ground Truth Test Actuals
         fig.add_trace(
@@ -99,25 +160,35 @@ def render_forecast_studio() -> None:
         )
 
         # Prediction Interval Band
-        fig.add_trace(
-            go.Scatter(
-                x=list(test_period["date"]) + list(test_period["date"])[::-1],
-                y=list(upper_bounds) + list(lower_bounds)[::-1],
-                fill="toself",
-                fillcolor="rgba(59, 130, 246, 0.2)",
-                line=dict(color="rgba(255,255,255,0)"),
-                hoverinfo="skip",
-                name=f"{int(coverage * 100)}% Calibrated Interval",
+        if show_ribbon:
+            fig.add_trace(
+                go.Scatter(
+                    x=list(test_period["date"]) + list(test_period["date"])[::-1],
+                    y=list(upper_bounds) + list(lower_bounds)[::-1],
+                    fill="toself",
+                    fillcolor="rgba(59, 130, 246, 0.18)",
+                    line=dict(color="rgba(255,255,255,0)"),
+                    hoverinfo="skip",
+                    name=f"{int(coverage * 100)}% Calibrated Conformal Band",
+                )
             )
-        )
 
         # Point Forecast
+        dash_style = (
+            "dash" if "Dashed" in line_palette else ("dot" if "Dotted" in line_palette else "solid")
+        )
+        line_col = (
+            "#f59e0b"
+            if "Amber" in line_palette
+            else ("#10b981" if "Emerald" in line_palette else "#2563eb")
+        )
+
         fig.add_trace(
             go.Scatter(
                 x=test_period["date"],
                 y=preds,
                 name=f"Forecast ({model_choice})",
-                line=dict(color="#2563eb", width=2.5, dash="dash"),
+                line=dict(color=line_col, width=2.5, dash=dash_style),
             )
         )
 
@@ -126,6 +197,7 @@ def render_forecast_studio() -> None:
             xaxis_title="Date",
             yaxis_title="Sales Units",
             template="plotly_white",
+            hovermode="x unified",
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             margin=dict(l=20, r=20, t=50, b=20),
         )
@@ -138,7 +210,24 @@ def render_forecast_studio() -> None:
         cov_val = float(np.mean((y_true >= lower_bounds) & (y_true <= upper_bounds)))
 
         m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Evaluation MAE", f"{mae_val:.2f}")
-        m2.metric("Evaluation WAPE", f"{wape_val:.1%}")
-        m3.metric("Empirical Coverage", f"{cov_val:.1%}", delta=f"{cov_val - coverage:+.1%}")
-        m4.metric("Mean Interval Width", f"{float(np.mean(upper_bounds - lower_bounds)):.1f} units")
+        m1.metric(
+            "Evaluation MAE",
+            f"{mae_val:.2f}",
+            help="ℹ️ Mean Absolute Error: average absolute deviation between forecast and actual units.",
+        )
+        m2.metric(
+            "Evaluation WAPE",
+            f"{wape_val:.1%}",
+            help="ℹ️ Weighted Absolute Percentage Error: total absolute errors divided by total sales volume.",
+        )
+        m3.metric(
+            "Empirical Coverage",
+            f"{cov_val:.1%}",
+            delta=f"{cov_val - coverage:+.1%}",
+            help="ℹ️ Percentage of actual points that landed inside the shaded uncertainty ribbon.",
+        )
+        m4.metric(
+            "Mean Interval Width",
+            f"{float(np.mean(upper_bounds - lower_bounds)):.1f} units",
+            help="ℹ️ Sharpness of the prediction interval. Narrower intervals at high coverage represent superior certainty.",
+        )
