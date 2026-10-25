@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+kaggle.json
+*.kaggle/
+
+# Data files (large, regenerable)
+data/raw/*
+data/processed/*
+data/synthetic/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/synthetic/.gitkeep
+
+# Model artifacts
+models/*.pkl
+models/*.h5
+models/*.pt
+models/*.joblib
+*.onnx
+
+# Reports output (regenerable)
+reports/tables/*.csv
+reports/figures/*.png
+reports/figures/*.pdf
+reports/figures/*.html
+!reports/tables/.gitkeep
+!reports/figures/.gitkeep
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# mypy
+.mypy_cache/
+
+# ruff
+.ruff_cache/
+
+# pytest
+.pytest_cache/
+
+# Distribution
+*.tar.gz
+*.whl

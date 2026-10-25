@@ -1,0 +1,60 @@
+# IDFS Default Configuration
+# See docs/DATA_CONTRACT.md for schema details
+
+project_name: IDFS
+seed: 42
+deadline: null  # Unknown — plan in relative weeks
+
+data:
+  source: synthetic  # synthetic | favorita | m5
+  synthetic_n_series: 50
+  synthetic_n_days: 730
+  synthetic_seed: 42
+  synthetic_intermittent_frac: 0.15
+  synthetic_drift_start_day: 600
+  date_col: date
+  target_col: sales
+  series_id_cols:
+    - store_id
+    - family
+
+split:
+  test_days: 28
+  val_days: 14
+  n_folds: 3
+  gap_days: 0
+
+forecast:
+  horizon: 14
+  frequency: D  # D | W | M
+
+xgboost:
+  n_estimators: 500
+  max_depth: 6
+  learning_rate: 0.05
+  subsample: 0.8
+  colsample_bytree: 0.8
+  min_child_weight: 10
+  early_stopping_rounds: 50
+  seed: 42
+
+lstm:
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  sequence_length: 28
+  batch_size: 64
+  max_epochs: 50
+  learning_rate: 0.001
+  patience: 10
+  seed: 42
+
+inventory:
+  lead_time_days: 5
+  review_period_days: 7
+  service_level: 0.95
+  holding_cost_per_unit_day: 0.10
+  stockout_cost_per_unit: 5.00
+  ordering_cost_per_order: 50.00
+  initial_stock_days: 30
+  policy: periodic  # periodic | continuous
