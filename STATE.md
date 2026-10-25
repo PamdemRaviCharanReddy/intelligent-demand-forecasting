@@ -1,9 +1,9 @@
 # Current Project State
 
-- **Current Phase**: Phase 5 (Monitoring & Explainability - Tier P1 / N4 / N5)
+- **Current Phase**: Phase 6 (Streamlit Dashboard & Reporting - Tier P0)
 - **Current Stage**: THINK / PLAN
-- **Last Completed Task**: Phase 4 Uncertainty Quantification & Inventory Simulation (100 tests passing, Quantile XGBoost, Split Conformal CQR, discrete-event Simulator, cost & sensitivity sweeps, tagged `phase-4-complete`).
-- **Next Action**: Execute Phase 5: Rolling-error drift monitor (N4), concept drift detection demo, Tree-SHAP feature importance (N5), and What-If scenario engine.
+- **Last Completed Task**: Phase 5 Monitoring & Explainability (105 tests passing, DriftMonitor, Tree-SHAP summary/waterfall, What-If simulation, tagged `phase-5-complete`).
+- **Next Action**: Execute Phase 6: Multi-page Streamlit dashboard, SQLite run storage, automated downloadable report builder, and headless smoke tests.
 - **Open Blockers**: None. Data pipeline fully validated on synthetic dataset (and ready for real Kaggle Favorita dataset when placed).
 
 ## Environment Summary
