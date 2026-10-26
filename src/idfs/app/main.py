@@ -9,6 +9,7 @@ import pandas as pd
 import streamlit as st
 
 from idfs.app.storage import RunStorage
+from idfs.app.views.backend_view import render_backend_view
 from idfs.app.views.data_explorer import render_data_explorer
 from idfs.app.views.drift_explain_view import render_drift_explain_view
 from idfs.app.views.forecast_studio import render_forecast_studio
@@ -91,9 +92,10 @@ def main() -> None:
             "3. Inventory & Alerts (N1+N2)",
             "4. Drift & Explainability (N4+N5)",
             "5. Executive Report Generator",
+            "6. 🔌 Backend API & Architecture",
         ],
         key="main_nav_radio",
-        help="ℹ️ Navigate across data profiling, forecasting, inventory optimization, production surveillance, and reports.",
+        help="ℹ️ Navigate across data profiling, forecasting, inventory optimization, production surveillance, reports, and backend API.",
     )
 
     st.sidebar.divider()
@@ -121,6 +123,8 @@ def main() -> None:
         render_drift_explain_view()
     elif page == "5. Executive Report Generator":
         render_reporting_view()
+    elif page == "6. 🔌 Backend API & Architecture":
+        render_backend_view()
 
 
 def render_reporting_view() -> None:
