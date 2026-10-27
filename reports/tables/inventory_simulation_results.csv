@@ -1,0 +1,5 @@
+policy,fill_rate,total_cost,holding_cost,stockout_cost,ordering_cost,stockout_periods,n_orders
+NaivePolicy,0.6286,204216.6,40332.5,158984.1,4900.0,228,98
+PointForecast-ZeroSafetyStock,0.6569,220075.92,70710.92,146865.0,2500.0,213,50
+"Gaussian-(R,S)-SL95%",0.6569,228297.94,78932.94,146865.0,2500.0,213,50
+"ConformalQuantile-(R,S)-N1+N2",0.6569,254395.24,105030.24,146865.0,2500.0,213,50

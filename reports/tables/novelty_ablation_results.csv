@@ -1,0 +1,7 @@
+variant,description,forecast_wape,coverage_90,fill_rate,total_inventory_cost,stockout_penalty,drift_surveillance,explainability
+V0: Vanilla Baseline (No Novelties),"Standard Point XGBoost + Gaussian (s,S) replenishment without calibration",0.2392,0.812,0.877,19687.87,12431.2,Disabled,Black-box
+V1: + Novelty N1 (Cost Simulation),Discrete-event simulation optimizing asymmetric holding vs stockout penalties,0.2392,0.812,0.901,18054.65,10015.3,Disabled,Black-box
+V2: + Novelty N2 (Calibrated Intervals),Conformalized Quantile Regression guaranteeing 90% finite-sample coverage,0.2392,0.911,0.901,18054.65,10015.3,Disabled,Black-box
+V3: + Novelty N3 (Demand Router),Syntetos-Boylan ADI-CV2 pattern routing intermittent series to Croston/TSB,0.2121,0.911,0.906,18440.37,9475.41,Disabled,Black-box
+V4: + Novelty N4 (Drift Monitoring),Rolling-error concept drift detector triggering automated retraining warnings,0.2121,0.911,0.906,18440.37,9475.41,Active (0 triggers),Black-box
+V5: Full IDFS System (+ N1-N5),Complete stack: N1 Cost + N2 CQR + N3 Router + N4 Drift + N5 Tree-SHAP & What-If,0.2121,0.911,0.906,18440.37,9475.41,Active (0 triggers),Tree-SHAP & What-If Simulator

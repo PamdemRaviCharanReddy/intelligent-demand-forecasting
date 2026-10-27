@@ -32,12 +32,12 @@ desktop.ini
 kaggle.json
 *.kaggle/
 
-# Data files (large, regenerable)
+# Data files
 data/raw/*
-data/processed/*
-data/synthetic/*
 !data/raw/.gitkeep
+!data/processed/fused_sales.parquet
 !data/processed/.gitkeep
+!data/synthetic/*.parquet
 !data/synthetic/.gitkeep
 
 # Model artifacts
@@ -47,12 +47,12 @@ models/*.pt
 models/*.joblib
 *.onnx
 
-# Reports output (regenerable)
-reports/tables/*.csv
-reports/figures/*.png
+# Reports output (evaluation tables and figures tracked for instant cloning)
 reports/figures/*.pdf
 reports/figures/*.html
+!reports/tables/*.csv
 !reports/tables/.gitkeep
+!reports/figures/*.png
 !reports/figures/.gitkeep
 
 # SQLite databases

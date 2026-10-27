@@ -1,0 +1,11 @@
+model_1,model_2,dm_stat,dm_p_value,wilcoxon_stat,wilcoxon_p_value,statistically_significant,superior_model
+Router (N3),XGBoost,-1.2103,0.2287,2069.0,0.0015,False,TIE (No Significant Difference)
+Router (N3),LSTM,1.0079,0.3157,2565.0,0.082,False,TIE (No Significant Difference)
+Router (N3),TSB,1.6115,0.1099,2119.0,0.0024,False,TIE (No Significant Difference)
+Router (N3),SeasonalNaive,0.0922,0.9267,2591.0,0.0962,False,TIE (No Significant Difference)
+XGBoost,LSTM,2.4124,0.0175,1514.0,0.0,True,LSTM
+XGBoost,TSB,2.6098,0.0103,1530.0,0.0,True,TSB
+XGBoost,SeasonalNaive,0.953,0.3427,2341.0,0.0169,False,TIE (No Significant Difference)
+LSTM,TSB,1.3538,0.1786,2288.5,0.011,False,TIE (No Significant Difference)
+LSTM,SeasonalNaive,-2.0646,0.0413,2857.5,0.3736,True,LSTM
+TSB,SeasonalNaive,-5.7946,0.0,2978.5,0.5902,True,TSB

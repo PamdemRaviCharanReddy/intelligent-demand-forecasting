@@ -1,0 +1,4 @@
+model,mae_mean,mae_std,rmse_mean,rmse_std,wape_mean,wape_std,mape_mean,mape_std,mase_mean,mase_std,coverage_90_mean,coverage_90_std,width_90_mean,width_90_std
+SeasonalNaive-7,27.603,0.781,50.737,0.527,0.225,0.011,111.843,28.496,1.056,0.031,0.86,0.008,121.54,0.474
+Naive,36.529,3.798,58.65,5.83,0.299,0.039,144.731,25.027,1.398,0.148,0.841,0.035,132.167,1.38
+XGBoost-global,67.891,1.633,83.385,0.39,0.554,0.027,388.548,37.316,2.598,0.069,0.306,0.032,69.27,0.406
