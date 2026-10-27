@@ -7,7 +7,9 @@ deadline: null  # Unknown — plan in relative weeks
 
 data:
   source: synthetic  # synthetic | favorita | m5
-  synthetic_n_series: 50
+  synthetic_n_stores: 15
+  synthetic_n_families: 20
+  synthetic_n_series: 300
   synthetic_n_days: 730
   synthetic_seed: 42
   synthetic_intermittent_frac: 0.15

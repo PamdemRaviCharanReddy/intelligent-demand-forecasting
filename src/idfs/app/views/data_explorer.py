@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+
+from idfs.app.cache import get_cached_sales
 
 
 def render_data_explorer() -> None:
@@ -27,11 +27,9 @@ def render_data_explorer() -> None:
 
         df: pd.DataFrame | None = None
         if data_source == "Processed Retail Dataset (Default)":
-            data_p = Path("data/processed/fused_sales.parquet")
-            if data_p.exists():
-                df = pd.read_parquet(data_p)
-            else:
-                st.warning(f"Default dataset not found at `{data_p}`. Please run pipeline first.")
+            df = get_cached_sales()
+            if df.empty:
+                st.warning("Default dataset not found. Please run pipeline first.")
         else:
             uploaded_file = st.file_uploader(
                 "Upload CSV or Parquet file",
@@ -44,10 +42,8 @@ def render_data_explorer() -> None:
                 else:
                     df = pd.read_csv(uploaded_file)
 
-    if df is None:
-        data_p = Path("data/processed/fused_sales.parquet")
-        if data_p.exists():
-            df = pd.read_parquet(data_p)
+    if df is None or df.empty:
+        df = get_cached_sales()
 
     if df is not None:
         df["date"] = pd.to_datetime(df["date"])
@@ -234,9 +230,14 @@ def render_data_explorer() -> None:
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        # 4. Tabbed Data Profiling & Interactive Data Editor
-        tab_editor, tab_stats = st.tabs(
-            ["✏️ Interactive Data Table & Editor", "📊 Statistical Distribution Summary"]
+        # 4. Tabbed Data Profiling, Heatmap & Interactive Data Editor
+        tab_editor, tab_heatmap, tab_movers, tab_stats = st.tabs(
+            [
+                "✏️ Interactive Data Table & Editor",
+                "🔥 Store × Family Portfolio Heatmap",
+                "🏆 Top & Bottom Demand Movers",
+                "📊 Statistical Distribution Summary",
+            ]
         )
 
         with tab_editor:
@@ -257,6 +258,89 @@ def render_data_explorer() -> None:
                 mime="text/csv",
                 help="ℹ️ Download the currently filtered and edited dataset to your local machine.",
             )
+
+        with tab_heatmap:
+            st.caption(
+                "Cross-echelon mean daily demand matrix across all 15 Stores and 20 Product Families."
+            )
+            if "store_id" in df.columns and "family" in df.columns:
+                pivot = (
+                    df.pivot_table(
+                        index="store_id",
+                        columns="family",
+                        values="sales",
+                        aggfunc="mean",
+                        observed=False,
+                    )
+                    .round(1)
+                    .fillna(0)
+                )
+                heat_fig = go.Figure(
+                    data=go.Heatmap(
+                        z=pivot.values,
+                        x=pivot.columns.tolist(),
+                        y=pivot.index.tolist(),
+                        colorscale="Blues",
+                        colorbar=dict(title="Daily Units"),
+                        hoverongaps=False,
+                    )
+                )
+                heat_fig.update_layout(
+                    title="Portfolio Demand Heatmap (15 Stores × 20 Families)",
+                    xaxis_title="Product Family",
+                    yaxis_title="Store ID",
+                    template="plotly_white",
+                    height=450,
+                    margin=dict(l=40, r=40, t=50, b=40),
+                )
+                st.plotly_chart(heat_fig, use_container_width=True)
+
+        with tab_movers:
+            st.caption(
+                "Portfolio ranking identifying high-velocity demand drivers and intermittent slow movers."
+            )
+            if "family" in df.columns and "sales" in df.columns:
+                fam_sales = (
+                    df.groupby("family", observed=False)["sales"]
+                    .sum()
+                    .reset_index()
+                    .sort_values("sales", ascending=False)
+                )
+                col_top, col_bot = st.columns(2)
+                with col_top:
+                    st.markdown("##### 🚀 Top 5 Highest-Volume Families")
+                    top_fig = go.Figure(
+                        go.Bar(
+                            x=fam_sales.head(5)["sales"],
+                            y=fam_sales.head(5)["family"],
+                            orientation="h",
+                            marker=dict(color="#10b981"),
+                        )
+                    )
+                    top_fig.update_layout(
+                        template="plotly_white",
+                        height=260,
+                        margin=dict(l=20, r=20, t=30, b=20),
+                        yaxis=dict(autorange="reversed"),
+                    )
+                    st.plotly_chart(top_fig, use_container_width=True)
+                with col_bot:
+                    st.markdown("##### 🐢 Bottom 5 Intermittent / Niche Families")
+                    bot_fig = go.Figure(
+                        go.Bar(
+                            x=fam_sales.tail(5)["sales"],
+                            y=fam_sales.tail(5)["family"],
+                            orientation="h",
+                            marker=dict(color="#f59e0b"),
+                        )
+                    )
+                    bot_fig.update_layout(
+                        template="plotly_white",
+                        height=260,
+                        margin=dict(l=20, r=20, t=30, b=20),
+                        yaxis=dict(autorange="reversed"),
+                    )
+                    st.plotly_chart(bot_fig, use_container_width=True)
 
         with tab_stats:
             st.caption(

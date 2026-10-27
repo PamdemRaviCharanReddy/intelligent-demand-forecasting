@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
-import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from idfs.app.cache import get_cached_csv, get_cached_daily_series
 from idfs.app.storage import RunStorage
 from idfs.inventory.simulation import (
     ConformalQuantilePolicy,
@@ -30,9 +28,8 @@ def render_inventory_view() -> None:
     with st.expander(
         "🏆 Historical Policy Benchmark Leaderboard (Novelties N1 + N2)", expanded=False
     ):
-        results_p = Path("reports/tables/inventory_simulation_results.csv")
-        if results_p.exists():
-            sim_df = pd.read_csv(results_p)
+        sim_df = get_cached_csv("reports/tables/inventory_simulation_results.csv")
+        if not sim_df.empty:
             st.dataframe(
                 sim_df.style.highlight_min(subset=["total_cost", "stockout_cost"], color="#dcfce7")
                 .highlight_max(subset=["fill_rate"], color="#dbeafe")
@@ -125,11 +122,10 @@ def render_inventory_view() -> None:
                 "Show Stockout Events", value=True, help="ℹ️ Show red unmet stockout bars."
             )
 
-    # Run discrete-event simulation
-    data_p = Path("data/processed/fused_sales.parquet")
-    if data_p.exists():
-        df = pd.read_parquet(data_p)
-        daily_demand = df.groupby("date")["sales"].mean().to_numpy()[-60:]
+    # Run discrete-event simulation (cached daily series)
+    daily_df = get_cached_daily_series()
+    if not daily_df.empty:
+        daily_demand = daily_df["sales"].to_numpy()[-60:]
         daily_forecast = np.maximum(
             0.0, daily_demand + np.random.normal(0, 3.0, size=len(daily_demand))
         )
@@ -265,6 +261,61 @@ def render_inventory_view() -> None:
             margin=dict(l=20, r=20, t=50, b=20),
         )
         st.plotly_chart(fig, use_container_width=True)
+
+        # Cost Decomposition Donut & Fill-Rate Service Level Gauge
+        col_g, col_p = st.columns(2)
+        with col_g:
+            gauge_fig = go.Figure(
+                go.Indicator(
+                    mode="gauge+number",
+                    value=float(res.fill_rate * 100),
+                    number=dict(suffix="%"),
+                    title=dict(text="Simulated Customer Service Fill Rate"),
+                    gauge=dict(
+                        axis=dict(range=[70, 100]),
+                        bar=dict(color="#2563eb"),
+                        steps=[
+                            {"range": [70, 85], "color": "#fee2e2"},
+                            {"range": [85, 95], "color": "#fef3c7"},
+                            {"range": [95, 100], "color": "#dcfce7"},
+                        ],
+                        threshold=dict(
+                            line=dict(color="#16a34a", width=3),
+                            thickness=0.75,
+                            value=95.0,
+                        ),
+                    ),
+                )
+            )
+            gauge_fig.update_layout(
+                height=250, margin=dict(l=30, r=30, t=40, b=20), template="plotly_white"
+            )
+            st.plotly_chart(gauge_fig, use_container_width=True)
+
+        with col_p:
+            cost_labels = ["Holding Cost", "Stockout Penalty", "Ordering Setup"]
+            cost_vals = [
+                float(res.total_cost.get("holding", 0.0)),
+                float(res.total_cost.get("stockout", 0.0)),
+                float(res.total_cost.get("ordering", res.total_cost.get("order", 0.0))),
+            ]
+            donut_fig = go.Figure(
+                go.Pie(
+                    labels=cost_labels,
+                    values=cost_vals,
+                    hole=0.5,
+                    marker=dict(colors=["#10b981", "#ef4444", "#3b82f6"]),
+                    textinfo="label+percent",
+                )
+            )
+            donut_fig.update_layout(
+                title="Replenishment Cost Decomposition",
+                height=250,
+                margin=dict(l=20, r=20, t=40, b=20),
+                template="plotly_white",
+                showlegend=False,
+            )
+            st.plotly_chart(donut_fig, use_container_width=True)
 
         # Save Run & Planner Review
         with st.expander(

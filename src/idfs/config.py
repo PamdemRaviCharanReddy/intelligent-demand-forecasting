@@ -19,7 +19,9 @@ class DataConfig:
     """Configuration for data sources and processing."""
 
     source: str = "synthetic"  # "synthetic" | "favorita" | "m5"
-    synthetic_n_series: int = 50
+    synthetic_n_stores: int = 15
+    synthetic_n_families: int = 20
+    synthetic_n_series: int = 300
     synthetic_n_days: int = 730  # 2 years
     synthetic_seed: int = 42
     synthetic_intermittent_frac: float = 0.15

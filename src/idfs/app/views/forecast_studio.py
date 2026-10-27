@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
-import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+
+from idfs.app.cache import get_cached_csv, get_cached_daily_series
 
 
 def render_forecast_studio() -> None:
@@ -29,23 +28,50 @@ def render_forecast_studio() -> None:
             help="ℹ️ Compare performance on the final untouched test set versus historical cross-validation folds.",
         )
         if "Sealed Test" in lb_choice:
-            table_final_p = Path("reports/tables/final_model_evaluation.csv")
-            if table_final_p.exists():
-                comp_final_df = pd.read_csv(table_final_p)
+            comp_final_df = get_cached_csv("reports/tables/final_model_evaluation.csv")
+            if not comp_final_df.empty:
                 st.dataframe(
                     comp_final_df.style.highlight_min(
                         subset=["mae", "rmse", "wape", "mase"], color="#dcfce7"
                     ).format(precision=3),
                     use_container_width=True,
                 )
+
+                # Visual comparison chart
+                chart_df = comp_final_df.sort_values("wape", ascending=True)
+                bar_fig = go.Figure()
+                bar_fig.add_trace(
+                    go.Bar(
+                        y=chart_df["model"],
+                        x=chart_df["wape"],
+                        orientation="h",
+                        marker=dict(
+                            color=[
+                                "#10b981" if w < 0.18 else ("#3b82f6" if w < 0.22 else "#94a3b8")
+                                for w in chart_df["wape"]
+                            ]
+                        ),
+                        text=[f"{w:.1%}" for w in chart_df["wape"]],
+                        textposition="outside",
+                        name="WAPE Error",
+                    )
+                )
+                bar_fig.update_layout(
+                    title="Model Accuracy Leaderboard (Lower WAPE is Better)",
+                    xaxis_title="Weighted Absolute Percentage Error (WAPE)",
+                    yaxis=dict(autorange="reversed"),
+                    template="plotly_white",
+                    height=320,
+                    margin=dict(l=20, r=20, t=40, b=20),
+                )
+                st.plotly_chart(bar_fig, use_container_width=True)
             else:
                 st.info(
                     "Run `python scripts/run_final_evaluation.py` to generate final test table."
                 )
         else:
-            table_p = Path("reports/tables/phase3_model_comparison.csv")
-            if table_p.exists():
-                comp_df = pd.read_csv(table_p)
+            comp_df = get_cached_csv("reports/tables/phase3_model_comparison.csv")
+            if not comp_df.empty:
                 st.dataframe(
                     comp_df.style.highlight_min(
                         subset=["mae_mean", "rmse_mean", "wape_mean", "mase_mean"], color="#dcfce7"
@@ -112,14 +138,9 @@ def render_forecast_studio() -> None:
                 help="ℹ️ Visual styling.",
             )
 
-    # Load data sample for interactive plotting
-    data_p = Path("data/processed/fused_sales.parquet")
-    if data_p.exists():
-        df = pd.read_parquet(data_p)
-        df["date"] = pd.to_datetime(df["date"])
-
-        # Group by date for global or store level
-        daily = df.groupby("date")["sales"].mean().reset_index().sort_values("date")
+    # Load data sample for interactive plotting (cached in-memory for instant rendering)
+    daily = get_cached_daily_series()
+    if not daily.empty:
         history = daily.iloc[-60:-horizon].copy()
         test_period = daily.iloc[-horizon:].copy()
 

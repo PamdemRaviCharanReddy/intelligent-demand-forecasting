@@ -29,11 +29,38 @@ def apply_custom_styles() -> None:
         <style>
         /* Sleek card container styles */
         .stMetric {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 14px 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .stMetric:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.15);
+            border-color: rgba(37, 99, 235, 0.4);
+        }
+        /* Top executive banner */
+        .top-banner {
+            background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
+            border-left: 4px solid #3b82f6;
             border-radius: 8px;
-            padding: 12px 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 10px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .banner-pill {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-left: 6px;
         }
         /* Expander headers */
         .streamlit-expanderHeader {
@@ -48,16 +75,38 @@ def apply_custom_styles() -> None:
         }
         /* Sidebar badge */
         .sidebar-badge {
-            background: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
             color: white;
             font-size: 0.75rem;
             font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 12px;
+            padding: 4px 10px;
+            border-radius: 14px;
             display: inline-block;
             margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
         }
         </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_top_header() -> None:
+    """Render top executive status banner across all dashboard views."""
+    st.markdown(
+        """
+        <div class="top-banner">
+            <div>
+                <span style="font-weight:700; color:#f8fafc; font-size:1.05rem;">IDFS Enterprise Platform</span>
+                <span class="banner-pill">🟢 15 Stores Active</span>
+                <span class="banner-pill">📦 20 Product Families</span>
+                <span class="banner-pill">📊 219K Sales Records</span>
+                <span class="banner-pill">⚡ FastAPI REST (Port 8000)</span>
+            </div>
+            <div style="font-size:0.8rem; color:#94a3b8;">
+                ICFAI Engineering Special Project
+            </div>
+        </div>
         """,
         unsafe_allow_html=True,
     )
@@ -112,6 +161,8 @@ def main() -> None:
         - Dr. Sandeep Kumar Panda
         """
     )
+
+    render_top_header()
 
     if page == "1. Data Explorer & EDA":
         render_data_explorer()

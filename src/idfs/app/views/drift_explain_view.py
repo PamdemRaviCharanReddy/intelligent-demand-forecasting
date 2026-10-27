@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+
+from idfs.app.cache import get_cached_csv
 
 
 def render_drift_explain_view() -> None:
@@ -31,14 +32,13 @@ def render_drift_explain_view() -> None:
             "Active monitoring tracks rolling error metrics against historical baseline thresholds."
         )
 
-        log_p = Path("reports/tables/drift_monitoring_log.csv")
         fig_p = Path("reports/figures/drift_detection_demo.png")
 
         if fig_p.exists():
             st.image(str(fig_p), use_container_width=True)
 
-        if log_p.exists():
-            drift_df = pd.read_csv(log_p)
+        drift_df = get_cached_csv("reports/tables/drift_monitoring_log.csv")
+        if not drift_df.empty:
             drift_events = drift_df[drift_df["drift_detected"] == True]  # noqa: E712
 
             c1, c2, c3 = st.columns(3)
@@ -82,23 +82,45 @@ def render_drift_explain_view() -> None:
             "Mathematically exact Shapley value decomposition of the global gradient-boosted forecaster."
         )
 
-        shap_table_p = Path("reports/tables/shap_feature_importance.csv")
         summary_fig_p = Path("reports/figures/shap_summary.png")
         waterfall_fig_p = Path("reports/figures/shap_waterfall.png")
 
         col_left, col_right = st.columns([1, 1])
         with col_left:
             st.markdown("#### Global Demand Attribution")
-            if summary_fig_p.exists():
-                st.image(str(summary_fig_p), use_container_width=True)
-            if shap_table_p.exists():
-                shap_df = pd.read_csv(shap_table_p)
-                st.dataframe(
-                    shap_df.head(10).style.format(
-                        {"mean_abs_shap": "{:.2f}", "relative_importance": "{:.2%}"}
-                    ),
-                    use_container_width=True,
+            shap_df = get_cached_csv("reports/tables/shap_feature_importance.csv")
+            if not shap_df.empty:
+                top_shap = shap_df.head(8).sort_values("relative_importance", ascending=True)
+                shap_fig = go.Figure(
+                    go.Bar(
+                        x=top_shap["relative_importance"],
+                        y=top_shap["feature"],
+                        orientation="h",
+                        marker=dict(
+                            color="#3b82f6",
+                        ),
+                        text=[f"{r:.1%}" for r in top_shap["relative_importance"]],
+                        textposition="outside",
+                    )
                 )
+                shap_fig.update_layout(
+                    title="Top 8 Demand Drivers by Relative Impact",
+                    xaxis_title="Relative Attribution Share",
+                    template="plotly_white",
+                    height=300,
+                    margin=dict(l=20, r=20, t=40, b=20),
+                )
+                st.plotly_chart(shap_fig, use_container_width=True)
+
+                with st.expander("📄 View Full SHAP Attribution Table", expanded=False):
+                    st.dataframe(
+                        shap_df.head(10).style.format(
+                            {"mean_abs_shap": "{:.2f}", "relative_importance": "{:.2%}"}
+                        ),
+                        use_container_width=True,
+                    )
+            elif summary_fig_p.exists():
+                st.image(str(summary_fig_p), use_container_width=True)
 
         with col_right:
             st.markdown("#### Local Prediction Waterfall")
