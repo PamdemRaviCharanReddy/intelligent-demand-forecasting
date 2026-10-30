@@ -6,7 +6,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from idfs.app.cache import get_cached_csv, get_cached_daily_series
+from idfs.app.cache import get_cached_csv, get_cached_daily_series, get_cached_sales
 from idfs.app.storage import RunStorage
 from idfs.inventory.simulation import (
     ConformalQuantilePolicy,
@@ -50,8 +50,20 @@ def render_inventory_view() -> None:
 
     # 2. Simulation Configuration Parameters (Collapsible Expander)
     with st.expander("⚙️ Replenishment & Cost Parameters (Click to open/close)", expanded=True):
-        c1, c2, c3 = st.columns(3)
-        with c1:
+        df_raw = get_cached_sales()
+        prods = (
+            sorted([str(p) for p in df_raw["family"].unique()])
+            if not df_raw.empty and "family" in df_raw.columns
+            else []
+        )
+
+        c0, c1, c2, c3 = st.columns([1.3, 1.2, 1, 1])
+        with c0:
+            selected_product = st.selectbox(
+                "Select Product for Policy:",
+                ["All Products (Portfolio Average)", *prods],
+                help="ℹ️ Simulate replenishment and inventory carrying policies for an individual product (e.g., Umbrella, Raincoat, Air Conditioner) or overall chain.",
+            )
             policy_type = st.selectbox(
                 "Replenishment Policy:",
                 [
@@ -61,6 +73,7 @@ def render_inventory_view() -> None:
                 ],
                 help="ℹ️ ConformalQuantile sizes safety stock via non-crossing quantile bounds; Gaussian assumes normal distribution; Naive uses trailing mean.",
             )
+        with c1:
             lead_time = st.slider(
                 "Supplier Lead Time L (Days):",
                 min_value=1,
@@ -68,7 +81,6 @@ def render_inventory_view() -> None:
                 value=5,
                 help="ℹ️ Days elapsed between order placement and physical warehouse arrival.",
             )
-        with c2:
             review_period = st.slider(
                 "Review Period R (Days):",
                 min_value=1,
@@ -76,6 +88,7 @@ def render_inventory_view() -> None:
                 value=7,
                 help="ℹ️ Replenishment cycle length (e.g. weekly review R=7). Protection horizon is R + L.",
             )
+        with c2:
             holding_cost = st.number_input(
                 "Holding Cost ($/unit/day):",
                 min_value=0.01,
@@ -83,6 +96,14 @@ def render_inventory_view() -> None:
                 value=0.10,
                 step=0.05,
                 help="ℹ️ Physical storage, insurance, spoilage, and capital interest per unsold unit per day.",
+            )
+            ordering_cost = st.number_input(
+                "Fixed Order Cost ($/order):",
+                min_value=0.0,
+                max_value=200.0,
+                value=50.0,
+                step=10.0,
+                help="ℹ️ Fixed administrative and freight delivery charge per replenishment batch.",
             )
         with c3:
             stockout_cost = st.number_input(
@@ -92,14 +113,6 @@ def render_inventory_view() -> None:
                 value=5.0,
                 step=1.0,
                 help="ℹ️ Financial loss, lost margin, and brand penalty per unfulfilled customer demand unit.",
-            )
-            ordering_cost = st.number_input(
-                "Fixed Order Cost ($/order):",
-                min_value=0.0,
-                max_value=200.0,
-                value=50.0,
-                step=10.0,
-                help="ℹ️ Fixed administrative and freight delivery charge per replenishment batch.",
             )
 
     # 3. Chart Customization Options
@@ -123,9 +136,17 @@ def render_inventory_view() -> None:
             )
 
     # Run discrete-event simulation (cached daily series)
-    daily_df = get_cached_daily_series()
-    if not daily_df.empty:
-        daily_demand = daily_df["sales"].to_numpy()[-60:]
+    if not df_raw.empty:
+        if selected_product != "All Products (Portfolio Average)":
+            plot_df = df_raw[df_raw["family"].astype(str) == str(selected_product)]
+        else:
+            plot_df = df_raw
+        daily_demand = plot_df.groupby("date")["sales"].mean().to_numpy()[-60:]
+    else:
+        daily_df = get_cached_daily_series()
+        daily_demand = (
+            daily_df["sales"].to_numpy()[-60:] if not daily_df.empty else np.array([20.0] * 60)
+        )
         daily_forecast = np.maximum(
             0.0, daily_demand + np.random.normal(0, 3.0, size=len(daily_demand))
         )
@@ -251,7 +272,7 @@ def render_inventory_view() -> None:
             )
 
         fig.update_layout(
-            title="Daily Inventory Dynamics (On-Hand Stock, Demand & Order Placement)",
+            title=f"Daily Inventory Dynamics for '{selected_product}' (On-Hand Stock, Demand & Order Placement)",
             xaxis_title="Simulation Day",
             yaxis_title="Units",
             template="plotly_white",

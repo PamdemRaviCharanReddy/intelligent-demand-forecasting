@@ -21,13 +21,36 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+DEFAULT_PRODUCT_CATALOG: list[str] = [
+    "Umbrella",
+    "Raincoat",
+    "Air Conditioner",
+    "Cold Drinks",
+    "Winter Jacket",
+    "Room Heater",
+    "Sweater",
+    "Sweets Gift Box",
+    "Sunscreen Lotion",
+    "Mosquito Repellent",
+    "Ceiling Fan",
+    "Thermal Wear",
+    "Ice Cream",
+    "Sunglasses",
+    "Winter Blankets",
+    "Coffee & Hot Cocoa",
+    "Waterproof Boots",
+    "Festive Decorative Lights",
+    "Electric Kettle",
+    "Reusable Water Bottle",
+]
+
 
 @dataclass
 class SyntheticConfig:
     """Configuration for synthetic data generation."""
 
     n_stores: int = 5
-    n_families: int = 10
+    n_families: int = 20
     n_days: int = 730  # 2 years
     start_date: str = "2021-01-01"
     seed: int = 42
@@ -41,8 +64,8 @@ class SyntheticConfig:
 def generate_synthetic_data(config: SyntheticConfig | None = None) -> dict[str, pd.DataFrame]:
     """Generate a complete synthetic dataset.
 
-    Produces data that mimics the Favorita competition structure:
-    - sales: daily sales by store × family
+    Produces data that mimics the Store Sales competition structure:
+    - sales: daily sales by store × family (real retail products)
     - stores: store metadata
     - holidays: holiday calendar
     - oil: external regressor (oil price proxy)
@@ -60,7 +83,12 @@ def generate_synthetic_data(config: SyntheticConfig | None = None) -> dict[str, 
 
     dates = pd.date_range(start=cfg.start_date, periods=cfg.n_days, freq="D")
     store_ids = [f"S{i:03d}" for i in range(cfg.n_stores)]
-    families = [f"FAM_{i:02d}" for i in range(cfg.n_families)]
+    if cfg.n_families <= len(DEFAULT_PRODUCT_CATALOG):
+        families = DEFAULT_PRODUCT_CATALOG[: cfg.n_families]
+    else:
+        families = DEFAULT_PRODUCT_CATALOG + [
+            f"Product_{i:02d}" for i in range(len(DEFAULT_PRODUCT_CATALOG), cfg.n_families)
+        ]
 
     # ── Store metadata ──
     store_types = rng.choice(["A", "B", "C", "D"], size=cfg.n_stores)
@@ -185,11 +213,54 @@ def _generate_series(
     weekly_pattern[0] = rng.uniform(-0.2, 0.0)  # Monday dip
     weekly = base * weekly_pattern[dow]
 
-    # ── Yearly seasonality ──
+    # ── Yearly seasonality (Aligned to realistic product seasonality) ──
     day_of_year = np.array([d.timetuple().tm_yday for d in dates])
-    yearly_amp = rng.uniform(0.05, 0.3) * base
-    yearly_phase = rng.uniform(0, 2 * np.pi)
-    yearly = yearly_amp * np.sin(2 * np.pi * day_of_year / 365.25 + yearly_phase)
+    fam_lower = family.lower()
+    if any(k in fam_lower for k in ["umbrella", "raincoat", "waterproof", "mosquito"]):
+        # Monsoon seasonal peak (~July-August, day 200)
+        yearly = base * 0.45 * np.exp(-0.5 * ((day_of_year - 205) / 35) ** 2)
+    elif any(
+        k in fam_lower
+        for k in [
+            "air conditioner",
+            "cold drinks",
+            "sunscreen",
+            "ceiling fan",
+            "ice cream",
+            "sunglasses",
+        ]
+    ):
+        # Summer seasonal peak (~May-June, day 145)
+        yearly = base * 0.40 * np.exp(-0.5 * ((day_of_year - 145) / 40) ** 2)
+    elif any(
+        k in fam_lower
+        for k in [
+            "winter jacket",
+            "room heater",
+            "sweater",
+            "thermal",
+            "blanket",
+            "hot cocoa",
+            "kettle",
+        ]
+    ):
+        # Winter seasonal peak (~December-January)
+        winter_dist = np.minimum(np.abs(day_of_year - 15), np.abs(day_of_year - 355))
+        yearly = base * 0.45 * np.exp(-0.5 * (winter_dist / 40) ** 2)
+    elif any(k in fam_lower for k in ["sweets", "festive"]):
+        # Festive demand surge (Diwali/holiday season, day 295 & day 355)
+        yearly = (
+            base
+            * 0.50
+            * (
+                np.exp(-0.5 * ((day_of_year - 295) / 20) ** 2)
+                + 0.6 * np.exp(-0.5 * ((day_of_year - 355) / 15) ** 2)
+            )
+        )
+    else:
+        yearly_amp = rng.uniform(0.05, 0.25) * base
+        yearly_phase = rng.uniform(0, 2 * np.pi)
+        yearly = yearly_amp * np.sin(2 * np.pi * day_of_year / 365.25 + yearly_phase)
 
     # ── Promotions ──
     promos = rng.random(n) < promo_freq

@@ -41,11 +41,11 @@ class BackendService:
                 self._cached_df = pd.DataFrame(
                     {
                         "date": dates,
-                        "item_id": "I001",
+                        "item_id": "Umbrella",
                         "store_id": "S001",
                         "sales": np.random.poisson(lam=15, size=len(dates)),
                         "price": 9.99,
-                        "category": "Electronics",
+                        "category": "Seasonal Goods",
                     }
                 )
         return self._cached_df

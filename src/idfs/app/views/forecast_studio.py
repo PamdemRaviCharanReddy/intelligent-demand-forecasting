@@ -6,7 +6,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from idfs.app.cache import get_cached_csv, get_cached_daily_series
+from idfs.app.cache import get_cached_csv, get_cached_daily_series, get_cached_sales
 
 
 def render_forecast_studio() -> None:
@@ -85,7 +85,20 @@ def render_forecast_studio() -> None:
 
     # 2. Interactive Forecast Inspection Controls
     with st.expander("⚙️ Forecast & Scenario Controls (Click to open/close)", expanded=True):
-        c1, c2, c3 = st.columns(3)
+        df_raw = get_cached_sales()
+        prods = (
+            sorted([str(p) for p in df_raw["family"].unique()])
+            if not df_raw.empty and "family" in df_raw.columns
+            else []
+        )
+
+        c0, c1, c2, c3 = st.columns([1.3, 1.2, 1, 1])
+        with c0:
+            selected_product = st.selectbox(
+                "Select Product to Forecast:",
+                ["All Products (Portfolio Average)", *prods],
+                help="ℹ️ Select an individual product (e.g., Umbrella, Raincoat, Air Conditioner, Cold Drinks, Winter Jacket) or view portfolio average.",
+            )
         with c1:
             model_choice = st.selectbox(
                 "Forecasting Algorithm:",
@@ -139,7 +152,15 @@ def render_forecast_studio() -> None:
             )
 
     # Load data sample for interactive plotting (cached in-memory for instant rendering)
-    daily = get_cached_daily_series()
+    if not df_raw.empty:
+        if selected_product != "All Products (Portfolio Average)":
+            plot_df = df_raw[df_raw["family"].astype(str) == str(selected_product)]
+        else:
+            plot_df = df_raw
+        daily = plot_df.groupby("date")["sales"].mean().reset_index().sort_values("date")
+    else:
+        daily = get_cached_daily_series()
+
     if not daily.empty:
         history = daily.iloc[-60:-horizon].copy()
         test_period = daily.iloc[-horizon:].copy()
@@ -214,7 +235,7 @@ def render_forecast_studio() -> None:
         )
 
         fig.update_layout(
-            title=f"Demand Forecast with {int(coverage * 100)}% Calibrated Intervals ({model_choice})",
+            title=f"Demand Forecast for '{selected_product}' with {int(coverage * 100)}% Calibrated Intervals ({model_choice})",
             xaxis_title="Date",
             yaxis_title="Sales Units",
             template="plotly_white",

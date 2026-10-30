@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
 from idfs.api.main import app
@@ -49,7 +48,7 @@ def test_api_forecast_models() -> None:
 
 def test_api_forecast_predict() -> None:
     payload = {
-        "item_id": "I001",
+        "item_id": "Umbrella",
         "store_id": "S001",
         "model_name": "TSB",
         "horizon_days": 14,
@@ -57,7 +56,7 @@ def test_api_forecast_predict() -> None:
     res = client.post("/api/v1/forecast/predict", json=payload)
     assert res.status_code == 200
     data = res.json()
-    assert data["item_id"] == "I001"
+    assert data["item_id"] == "Umbrella"
     assert len(data["forecast_values"]) == 14
     assert len(data["lower_bound"]) == 14
     assert len(data["upper_bound"]) == 14

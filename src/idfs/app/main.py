@@ -99,7 +99,7 @@ def render_top_header() -> None:
             <div>
                 <span style="font-weight:700; color:#f8fafc; font-size:1.05rem;">IDFS Enterprise Platform</span>
                 <span class="banner-pill">🟢 15 Stores Active</span>
-                <span class="banner-pill">📦 20 Product Families</span>
+                <span class="banner-pill">📦 20 Retail Products</span>
                 <span class="banner-pill">📊 219K Sales Records</span>
                 <span class="banner-pill">⚡ FastAPI REST (Port 8000)</span>
             </div>

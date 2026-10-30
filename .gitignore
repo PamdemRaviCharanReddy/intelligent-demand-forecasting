@@ -55,10 +55,11 @@ reports/figures/*.html
 !reports/figures/*.png
 !reports/figures/.gitkeep
 
-# SQLite databases
+# SQLite databases & runtime runs
 *.db
 *.sqlite
 *.sqlite3
+data/simulation_runs.json
 
 # Jupyter
 .ipynb_checkpoints/

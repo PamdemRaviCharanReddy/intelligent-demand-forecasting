@@ -122,7 +122,7 @@ def render_backend_view() -> None:
         path = "/api/v1/forecast/predict"
         c_sku, c_store, c_m = st.columns(3)
         with c_sku:
-            item_id = st.text_input("Item ID:", value="I001")
+            item_id = st.text_input("Product Name / SKU:", value="Umbrella")
         with c_store:
             store_id = st.text_input("Store ID:", value="S001")
         with c_m:

@@ -64,9 +64,9 @@ def render_data_explorer() -> None:
             )
         with col3:
             st.metric(
-                "Product Families",
+                "Active Products",
                 f"{df['family'].nunique() if 'family' in df else 'N/A'}",
-                help="ℹ️ Number of product categories (SKU families) modeled.",
+                help="ℹ️ Number of distinct retail product lines (SKUs) modeled in the portfolio.",
             )
         with col4:
             st.metric(
@@ -92,9 +92,9 @@ def render_data_explorer() -> None:
             with fc2:
                 families = sorted([str(f) for f in df["family"].unique()]) if "family" in df else []
                 selected_family = st.selectbox(
-                    "Filter Product Family:",
+                    "Select Retail Product:",
                     ["All", *families],
-                    help="ℹ️ Filter by a specific SKU category (e.g. GROCERY, BEVERAGES) or view total retail portfolio.",
+                    help="ℹ️ Filter by a specific product (e.g., Umbrella, Raincoat, Air Conditioner, Cold Drinks, Winter Jacket) or view total chain volume.",
                 )
             with fc3:
                 min_d = df["date"].min().date()
@@ -220,7 +220,7 @@ def render_data_explorer() -> None:
             )
 
         fig.update_layout(
-            title=f"Demand Volume Over Time ({freq_agg} Resampling - Store: {selected_store}, Family: {selected_family})",
+            title=f"Demand Volume Over Time ({freq_agg} Resampling - Store: {selected_store}, Product: {selected_family})",
             xaxis_title="Date",
             yaxis_title="Units Sold",
             template="plotly_white",
@@ -234,8 +234,8 @@ def render_data_explorer() -> None:
         tab_editor, tab_heatmap, tab_movers, tab_stats = st.tabs(
             [
                 "✏️ Interactive Data Table & Editor",
-                "🔥 Store × Family Portfolio Heatmap",
-                "🏆 Top & Bottom Demand Movers",
+                "🔥 Store × Product Portfolio Heatmap",
+                "🏆 Top & Bottom Product Movers",
                 "📊 Statistical Distribution Summary",
             ]
         )
@@ -261,7 +261,7 @@ def render_data_explorer() -> None:
 
         with tab_heatmap:
             st.caption(
-                "Cross-echelon mean daily demand matrix across all 15 Stores and 20 Product Families."
+                "Cross-echelon mean daily demand matrix across all 15 Stores and 20 Retail Products."
             )
             if "store_id" in df.columns and "family" in df.columns:
                 pivot = (
@@ -286,8 +286,8 @@ def render_data_explorer() -> None:
                     )
                 )
                 heat_fig.update_layout(
-                    title="Portfolio Demand Heatmap (15 Stores × 20 Families)",
-                    xaxis_title="Product Family",
+                    title="Portfolio Demand Heatmap (15 Stores × 20 Retail Products)",
+                    xaxis_title="Retail Product",
                     yaxis_title="Store ID",
                     template="plotly_white",
                     height=450,
@@ -297,7 +297,7 @@ def render_data_explorer() -> None:
 
         with tab_movers:
             st.caption(
-                "Portfolio ranking identifying high-velocity demand drivers and intermittent slow movers."
+                "Portfolio ranking identifying high-velocity demand drivers and niche/seasonal products."
             )
             if "family" in df.columns and "sales" in df.columns:
                 fam_sales = (
@@ -308,7 +308,7 @@ def render_data_explorer() -> None:
                 )
                 col_top, col_bot = st.columns(2)
                 with col_top:
-                    st.markdown("##### 🚀 Top 5 Highest-Volume Families")
+                    st.markdown("##### 🚀 Top 5 Highest-Volume Products")
                     top_fig = go.Figure(
                         go.Bar(
                             x=fam_sales.head(5)["sales"],
@@ -325,7 +325,7 @@ def render_data_explorer() -> None:
                     )
                     st.plotly_chart(top_fig, use_container_width=True)
                 with col_bot:
-                    st.markdown("##### 🐢 Bottom 5 Intermittent / Niche Families")
+                    st.markdown("##### 🐢 Bottom 5 Niche / Seasonal Products")
                     bot_fig = go.Figure(
                         go.Bar(
                             x=fam_sales.tail(5)["sales"],

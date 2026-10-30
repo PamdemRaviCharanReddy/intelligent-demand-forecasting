@@ -32,7 +32,11 @@ class DataSummaryResponse(BaseModel):
 
 
 class ForecastRequest(BaseModel):
-    item_id: str = Field(default="I001", description="Item SKU ID")
+    item_id: str = Field(
+        default="Umbrella",
+        description="Retail Product Name / SKU ID",
+        examples=["Umbrella"],
+    )
     store_id: str = Field(default="S001", description="Store ID")
     model_name: str = Field(default="TSB", description="Forecasting model name")
     horizon_days: int = Field(default=28, ge=7, le=90)
