@@ -1,204 +1,173 @@
-# Intelligent Demand Forecasting System (IDFS)
+================================================================================
+INTELLIGENT DEMAND FORECASTING SYSTEM (IDFS)
+A Multi-Model Approach to Retail Demand Prediction, Conformal Uncertainty 
+Quantification, Tree-SHAP Explainability, and Autonomous (R, S) Inventory Optimization
+================================================================================
 
-> **A Multi-Model Approach to Retail Demand Prediction, Conformal Uncertainty Quantification, Tree-SHAP Explainability, and Autonomous $(R, S)$ Inventory Optimization**
+1. ACADEMIC & TEAM METADATA
+--------------------------------------------------------------------------------
+Institution       : ICFAI Foundation for Higher Education (IFHE), Hyderabad
+Department        : Department of Computer Science & Engineering, IcfaiTech
+Academic Year     : 2026
+GitHub Repository : https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting
 
----
+PROJECT TEAM:
+1. Pamdem Ravi Charan Reddy (Lead)
+   - Enrollment No : 24STUCHH010156
+   - Official Role : Lead Systems & Data Pipeline Engineer
+   - Key Work      : End-to-end architecture, 44-feature engineering pipeline, 
+                     FastAPI REST backend (Port 8000), Streamlit UI (Port 8501),
+                     Tree-SHAP explainability engine.
 
-## 📋 Academic & Team Information
+2. Jaiti Vijaya Shravani
+   - Enrollment No : 24STUCHH010756
+   - Official Role : Statistical Modeling & Uncertainty Quantification Lead
+   - Key Work      : Intermittent demand models (TSB, Croston-SBA, SARIMAX), 
+                     Syntetos-Boylan demand pattern router, Conformalized 
+                     Quantile Regression (CQR) distribution-free intervals.
 
-* **Institution:** ICFAI Foundation for Higher Education (IFHE), Hyderabad
-* **Department:** Department of Computer Science and Engineering, IcfaiTech
-* **Academic Year:** 2026
-* **GitHub Repository:** [https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting](https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting)
+3. Vankayalapati Srujana
+   - Enrollment No : 24STUCHH010749
+   - Official Role : Deep Learning & MLOps Monitoring Engineer
+   - Key Work      : PyTorch LSTM recurrent neural network, Global XGBoost, 
+                     10-model benchmark tournament evaluation, Population 
+                     Stability Index (PSI) & KS-test concept drift monitoring.
 
-### Project Team
+4. Pottipothu V M Krishna Swamy
+   - Enrollment No : 24STUCHH010207
+   - Official Role : Inventory Operations & Simulation Lead
+   - Key Work      : Discrete-event (R, S) periodic review inventory simulator, 
+                     dynamic conformal safety stock optimization, asymmetric 
+                     retail cost surface modeling, service level validation.
 
-| Team Member | Enrollment Number | Official Role | Core Contribution Area |
-| :--- | :--- | :--- | :--- |
-| **Pamdem Ravi Charan Reddy** *(Lead)* | `24STUCHH010156` | **Project Lead & Data Pipeline Engineer** | Architecture, 44-Feature Pipeline, FastAPI Backend, Streamlit UI, Tree-SHAP |
-| **Jaiti Vijaya Shravani** | `24STUCHH010756` | **Statistical Modeling & Uncertainty Lead** | Intermittent Models (TSB, Croston-SBA, SARIMAX), Syntetos-Boylan Router, Conformal CQR |
-| **Vankayalapati Srujana** | `24STUCHH010749` | **Deep Learning & MLOps Engineer** | PyTorch LSTM Architecture, Global XGBoost, 10-Model Tournament, PSI/KS Drift Monitoring |
-| **Pottipothu V M Krishna Swamy** | `24STUCHH010207` | **Inventory Operations & Simulation Lead** | Stochastic $(R, S)$ Periodic Review Simulator, Dynamic Safety Stock, Cost Surface Modeling |
+PROJECT GUIDES:
+- Dr. Sukanta Das       : Associate Professor, Dept. of CSE, IcfaiTech
+- Dr. Sandeep Kumar Panda : Professor & Research Advisor, Dept. of CSE, IcfaiTech
 
-### Project Guides
-* **Dr. Sukanta Das** — Associate Professor, Department of CSE, IcfaiTech
-* **Dr. Sandeep Kumar Panda** — Professor & Research Advisor, Department of CSE, IcfaiTech
 
----
+2. EXECUTIVE SUMMARY & PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+Retailers face an asymmetric operational dilemma: overstocking causes heavy capital
+lockup and inventory holding costs, while understocking leads to stockouts, lost 
+revenue, and damaged customer retention. Traditional forecasting tools (e.g., 
+moving averages or single point estimates) fail to manage intermittent demand, 
+promotional spikes, and forecast uncertainty.
 
-## 📌 Executive Summary
+The Intelligent Demand Forecasting System (IDFS) bridges machine learning with 
+supply chain operations research. Built on 219,000+ daily transactions across 15 
+stores and 20 seasonal products spanning 4 years (2013-2017), the system:
+- Evaluates 10 diverse models across statistical, ML, and deep learning paradigms.
+- Employs Teunter-Syntetos-Babai (TSB) as the champion model (15.45% WAPE).
+- Calibrates distribution-free 90% prediction intervals via Conformal Prediction.
+- Simulates periodic review (R, S) inventory replenishment to minimize costs.
+- Provides Tree-SHAP interpretability and real-time MLOps drift monitoring.
 
-Traditional retail forecasting relies on simple moving averages or point predictions that fail to account for seasonal volatility, intermittent purchase patterns, and forecast uncertainty. This results in severe stockouts (lost sales) or excessive inventory holding costs.
 
-The **Intelligent Demand Forecasting System (IDFS)** is an end-to-end machine learning and operational research platform that bridges the gap between predictive modeling and inventory decision-making. Built on a dataset of **219,000+ daily transactions across 15 stores and 20 seasonal products over 4 years**, IDFS:
-1. Benchmarks **10 diverse forecasting models** spanning statistical, machine learning, and deep learning paradigms.
-2. Identifies the **Teunter-Syntetos-Babai (TSB)** model as the champion (**15.45% WAPE**, outperforming baselines by over **51.4%**).
-3. Quantifies forecast uncertainty using **Conformalized Quantile Regression (CQR)** with distribution-free 90% prediction intervals.
-4. Simulates periodic review **$(R, S)$ inventory replenishment policies**, cutting order fragmentation by **49%** while maintaining a **>95% on-shelf service level**.
-5. Explains individual predictions via **Tree-SHAP** and tracks concept/data drift using **Population Stability Index (PSI)** and **Kolmogorov-Smirnov (KS)** tests.
+3. 5 CORE RESEARCH NOVELTIES
+--------------------------------------------------------------------------------
+[N1] Cost-Optimized (R, S) Inventory Simulation:
+     A discrete-event simulation tracking holding costs ($1.50/unit), stockout 
+     penalties ($15.00/unit), and ordering overhead ($50.00/order) under lead-time 
+     uncertainty, cutting order fragmentation by 49%.
 
----
+[N2] Conformalized Quantile Regression (CQR):
+     Distribution-free uncertainty intervals calibrated on held-out data to 
+     guarantee finite-sample 90% empirical coverage without assuming Gaussian errors.
 
-## 🔬 5 Core Research Novelties
+[N3] Syntetos-Boylan Demand-Pattern Router:
+     Meta-classification using Average Inter-demand Interval (ADI) and squared 
+     Coefficient of Variation (CV^2) to categorize SKUs into Smooth, Intermittent, 
+     Erratic, or Lumpy demand, routing each to its optimal model family.
 
-* **N1: Cost-Optimized $(R, S)$ Inventory Simulation:** Discrete-event operational simulation evaluating carrying, stockout penalty, and replenishment costs under dynamic lead-time demand.
-* **N2: Conformalized Quantile Regression (CQR):** Distribution-free prediction intervals calibrated on held-out data to guarantee finite-sample coverage without assuming Gaussian errors.
-* **N3: Syntetos-Boylan Demand-Pattern Router:** Automated time-series classification via Average Inter-demand Interval ($ADI$) and squared Coefficient of Variation ($CV^2$) into *Smooth*, *Intermittent*, *Erratic*, and *Lumpy* demand quadrants.
-* **N4: Automated Drift Monitoring & MLOps Guardrails:** Continuous tracking of covariate and concept shifts via PSI and two-sample KS-tests with automated threshold alerts for model retraining.
-* **N5: Tree-SHAP Model Explainability:** Game-theoretic feature attribution decomposing predictions into exact marginal contributions for complete transparency to store managers.
+[N4] Automated Drift Monitoring & MLOps Guardrails:
+     Population Stability Index (PSI) and two-sample Kolmogorov-Smirnov (KS) tests 
+     to detect covariate and concept drift with automated retraining alerts.
 
----
+[N5] Tree-SHAP Model Explainability:
+     Game-theoretic feature attribution decomposing predictions into exact marginal 
+     contributions, showing 28-day rolling average (43.9%) and promotions (5.6%) 
+     drive over 60% of forecast decisions.
 
-## 📊 10-Model Benchmark Tournament Leaderboard
 
-All models were evaluated on an identical out-of-sample holdout test set using rolling-origin backtesting:
+4. 10-MODEL BENCHMARK TOURNAMENT LEADERBOARD
+--------------------------------------------------------------------------------
+Rank | Model Name              | Paradigm       | MAE   | RMSE  | WAPE   | MASE | Cov90%
+-----+-------------------------+----------------+-------+-------+--------+------+-------
+ 1   | TSB (Champion)          | Statistical    | 27.77 | 36.50 | 15.45% | 0.78 | 82.1%
+ 2   | Prophet (Meta)          | Bayesian       | 28.90 | 40.17 | 16.07% | 0.81 | 84.8%
+ 3   | Croston-SBA             | Statistical    | 32.13 | 42.23 | 17.87% | 0.90 | 80.4%
+ 4   | PyTorch-LSTM            | Deep Learning  | 32.30 | 43.34 | 17.97% | 0.90 | 80.4%
+ 5   | Weighted Ensemble       | Hybrid         | 32.81 | 46.96 | 18.25% | 0.92 | 83.0%
+ 6   | Seasonal Naive (7-Day)  | Baseline       | 37.55 | 58.13 | 20.89% | 1.05 | 85.7%
+ 7   | SARIMAX(1,0,0)x(0,1,0)7 | Time Series    | 37.61 | 58.15 | 20.92% | 1.05 | 84.8%
+ 8   | Demand Pattern Router   | Meta-Learning  | 38.14 | 49.48 | 21.21% | 1.07 | 84.8%
+ 9   | XGBoost-Global          | Gradient Boost | 43.00 | 51.76 | 23.92% | 1.20 | 81.2%
+ 10  | Naive Baseline          | Heuristic      | 57.16 | 65.44 | 31.79% | 1.60 | 92.9%
 
-| Rank | Model Name | Paradigm | MAE | RMSE | WAPE (%) | MASE | 90% Coverage | Pinball Loss |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| 🥇 **1** | **TSB (Teunter-Syntetos-Babai)** | **Statistical (Intermittent)** | **27.77** | **36.50** | **15.45%** | **0.777** | **82.1%** | **6.03** |
-| 🥈 2 | Prophet (Meta) | Bayesian Additive | 28.90 | 40.17 | 16.07% | 0.808 | 84.8% | 7.57 |
-| 🥉 3 | Croston-SBA | Statistical (Intermittent) | 32.13 | 42.23 | 17.87% | 0.898 | 80.4% | 7.39 |
-| 4 | PyTorch-LSTM | Deep Learning (RNN) | 32.30 | 43.34 | 17.97% | 0.903 | 80.4% | 7.73 |
-| 5 | Weighted Ensemble | Hybrid Combination | 32.81 | 46.96 | 18.25% | 0.917 | 83.0% | 9.45 |
-| 6 | Seasonal Naive (7-Day) | Heuristic Baseline | 37.55 | 58.13 | 20.89% | 1.050 | 85.7% | 12.84 |
-| 7 | SARIMAX(1,0,0)x(0,1,0)7 | Classical Time Series | 37.61 | 58.15 | 20.92% | 1.051 | 84.8% | 12.89 |
-| 8 | Demand Pattern Router (N3) | Meta-Learning Selection | 38.14 | 49.48 | 21.21% | 1.066 | 84.8% | 7.46 |
-| 9 | XGBoost-Global | Gradient Boosted Trees | 43.00 | 51.76 | 23.92% | 1.202 | 81.2% | 7.11 |
-| 10 | Naive Baseline | Naive Drift | 57.16 | 65.44 | 31.79% | 1.598 | 92.9% | 9.83 |
 
----
+5. DATASET & 20 SEASONAL PRODUCT CATALOG
+--------------------------------------------------------------------------------
+Total Transactions : 219,000+ records
+History            : 4 years (daily granularity)
+Store Footprint    : 15 retail stores across multiple geographic clusters
 
-## 📦 Retail Product Catalog
+Product Catalog by Seasonality:
+- Monsoon Demand : Umbrella, Raincoat, Waterproof Boots
+- Summer Demand  : Air Conditioner, Ceiling Fan, Cold Drinks, Ice Cream,
+                   Sunscreen Lotion, Reusable Water Bottle
+- Winter Demand  : Sweater, Winter Jacket, Thermal Wear, Room Heater,
+                   Winter Blankets, Coffee & Hot Cocoa, Electric Kettle
+- Festive/Yearly : Sweets Gift Box, Festive Decorative Lights, Sunglasses,
+                   Mosquito Repellent
 
-The dataset models 20 distinct products representing 4 distinct seasonal demand archetypes across 15 retail stores:
 
-* **Monsoon Peaks:** Umbrella, Raincoat, Waterproof Boots
-* **Summer Peaks:** Air Conditioner, Ceiling Fan, Cold Drinks, Ice Cream, Sunscreen Lotion, Reusable Water Bottle
-* **Winter Peaks:** Sweater, Winter Jacket, Thermal Wear, Room Heater, Winter Blankets, Coffee & Hot Cocoa, Electric Kettle
-* **Festive & Steady Surges:** Sweets Gift Box, Festive Decorative Lights, Sunglasses, Mosquito Repellent
+6. SYSTEM ARCHITECTURE & PIPELINE
+--------------------------------------------------------------------------------
+1. Data Sources         : 15 Stores x 20 Products historical transactions (SQLite/Parquet)
+2. Feature Pipeline     : 44 engineered features (lags, rolling stats, cyclical calendar)
+3. Model Tournament     : 10 parallel statistical, ML, and deep learning models
+4. Conformal Quantile   : 90% prediction intervals calibrated via CQR
+5. Inventory Engine     : Discrete-event periodic review (R, S) policy simulator
+6. Decoupled Delivery   : FastAPI REST backend (Port 8000) + Streamlit UI (Port 8501)
 
----
 
-## 🏗️ System Architecture & Workflow
+7. TECHNOLOGY STACK
+--------------------------------------------------------------------------------
+- Core Language       : Python 3.12 (managed via uv)
+- Backend API         : FastAPI, Uvicorn, Pydantic
+- Frontend UI         : Streamlit, Plotly, Matplotlib, Seaborn
+- Machine Learning    : Scikit-learn, XGBoost, PyTorch (LSTM), Prophet
+- Statistical Models  : Statsmodels, custom TSB & Croston implementations
+- Explainability      : SHAP (Tree-SHAP)
+- Storage & Data      : SQLite, Apache Parquet, Pandas, NumPy
+- Code Quality        : Pytest, Ruff
 
-```
-[ Raw Multi-Store Data ] (219,000+ Transactions across 15 Stores & 20 SKUs)
-           │
-           ▼
-[ Feature Engineering ] (44 Dimensions: Lags, Rolling Stats, Fourier Calendar, Promos)
-           │
-           ▼
-[ Model Tournament ] (10 Models: TSB, Croston, Prophet, LSTM, XGBoost, SARIMAX)
-           │
-           ▼
-[ Conformal Calibration ] (CQR 90% Distribution-Free Prediction Intervals)
-           │
-           ▼
-[ (R, S) Inventory Optimization ] (Dynamic Safety Stock & Order-Up-To Simulation)
-           │
-           ▼
-[ Decoupled Delivery ]
-   ├── FastAPI REST Backend (Port 8000: /predict, /benchmark, /explain, /drift)
-   └── Streamlit Multi-Page UI (Port 8501: Interactive Analytics & Decision Support)
-```
 
----
+8. HOW TO RUN THE SYSTEM
+--------------------------------------------------------------------------------
+Step 1: Setup Environment
+    uv venv --python 3.12 .venv
+    .venv\Scripts\Activate.ps1
+    uv pip install -e ".[dev]"
 
-## 🛠️ Technology Stack
+Step 2: Start Backend REST API (Port 8000)
+    uvicorn idfs.api.main:app --host 127.0.0.1 --port 8000 --reload
+    * Interactive API Documentation: http://127.0.0.1:8000/docs
 
-* **Programming Language:** Python 3.12 (managed via `uv`)
-* **Data Processing:** Pandas, NumPy, SciPy, Statsmodels
-* **Machine Learning & Deep Learning:** Scikit-learn, XGBoost, PyTorch (LSTM), Prophet
-* **Explainability:** SHAP (Tree-SHAP)
-* **Backend Services:** FastAPI, Uvicorn, Pydantic
-* **Frontend Dashboard:** Streamlit, Plotly, Matplotlib, Seaborn
-* **Data Storage:** Parquet, SQLite
-* **Quality & Testing:** Pytest, Ruff
+Step 3: Start Frontend Streamlit Dashboard (Port 8501)
+    streamlit run streamlit_app.py --server.port 8501
+    * Interactive Dashboard: http://localhost:8501
 
----
 
-## 🚀 Installation & Quickstart
+9. API ENDPOINTS SUMMARY
+--------------------------------------------------------------------------------
+GET   /health              : System status and package version
+POST  /forecast/predict    : Generate demand forecast with 90% CQR intervals
+GET   /models/benchmark    : Retrieve 10-model tournament leaderboard
+POST  /explainability/shap : Return Tree-SHAP feature importance attributions
+POST  /inventory/simulate  : Run (R, S) periodic review inventory cost simulation
+GET   /drift/status        : Return Population Stability Index (PSI) drift status
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting.git
-cd intelligent-demand-forecasting
-```
-
-### 2. Environment Setup
-```powershell
-# Create virtual environment with Python 3.12
-uv venv --python 3.12 .venv
-
-# Activate environment (Windows PowerShell)
-.venv\Scripts\Activate.ps1
-
-# Install package dependencies
-uv pip install -e ".[dev]"
-```
-
-### 3. Launch Backend API (FastAPI)
-```powershell
-uvicorn idfs.api.main:app --host 127.0.0.1 --port 8000 --reload
-```
-* Interactive API Documentation (Swagger): `http://127.0.0.1:8000/docs`
-
-### 4. Launch Frontend Dashboard (Streamlit)
-In a separate terminal:
-```powershell
-streamlit run streamlit_app.py --server.port 8501
-```
-* Interactive Web UI: `http://localhost:8501`
-
----
-
-## 📁 Repository Directory Structure
-
-```
-SP-SP/
-├── configs/                     # YAML configuration for models, features, & inventory
-├── data/                        # Raw, processed, and benchmark datasets
-├── docs/                        # Project documentation, architecture ADRs, and protocols
-├── reports/                     # Project presentation decks, reports, and generated charts
-│   ├── figures/                 # EDA and SHAP visualizations
-│   ├── ppt_charts/              # Visual charts for slide deck
-│   ├── tables/                  # Benchmark CSVs, ablation tables, and simulation results
-│   ├── CAPSTONE_PROJECT_REPORT_ADVANCED.md
-│   ├── IDFS_Modern_Presentation.pptx
-│   └── PRESENTATION_SPEAKER_NOTES.md
-├── scripts/                     # Utility scripts for presentation and benchmark generation
-│   ├── generate_modern_ppt.py   # Automated 10-slide visual presentation generator
-│   └── dev.py                   # Development and verification tasks
-├── src/idfs/                    # Core Production Package
-│   ├── api/                     # FastAPI application endpoints and Pydantic schemas
-│   ├── dashboard/               # Streamlit multi-page application components
-│   ├── evaluation/              # Benchmark scorecards, loss metrics, and significance tests
-│   ├── explainability/          # Tree-SHAP attribution and scenario simulators
-│   ├── features/                # 44-feature engineering transformations
-│   ├── inventory/               # Stochastic (R, S) policy simulator and cost models
-│   ├── models/                  # TSB, Croston-SBA, Prophet, LSTM, XGBoost implementations
-│   ├── monitoring/              # PSI and KS-test drift detection engine
-│   └── uncertainty/             # Conformalized Quantile Regression calibration
-├── tests/                       # Pytest test suite (unit and integration tests)
-├── pyproject.toml               # Build configuration, package metadata, and dependencies
-└── README.md                    # Project overview and setup instructions
-```
-
----
-
-## 📡 API Endpoints Summary
-
-| Method | Endpoint | Description |
-| :---: | :--- | :--- |
-| `GET` | `/health` | System health check and package version status |
-| `POST` | `/forecast/predict` | Generate multi-horizon forecasts with 90% CQR prediction intervals |
-| `GET` | `/models/benchmark` | Retrieve 10-model tournament performance leaderboard |
-| `POST` | `/explainability/shap` | Return Tree-SHAP feature importance and marginal attributions |
-| `POST` | `/inventory/simulate` | Run $(R, S)$ periodic review inventory cost simulation |
-| `GET` | `/drift/status` | Check Population Stability Index (PSI) and KS drift indicators |
-
----
-
-## 📜 Citation & License
-
-This project was developed for the Special Project Capstone at **ICFAI Foundation for Higher Education (IFHE), Hyderabad**. Released under the MIT License.
+================================================================================
+END OF README
+================================================================================
