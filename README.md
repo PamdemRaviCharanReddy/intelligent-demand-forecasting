@@ -13,12 +13,12 @@
 
 ### Project Team
 
-| Team Member | Enrollment Number | Official Role | Core Contribution Area |
-| :--- | :--- | :--- | :--- |
-| **Pamdem Ravi Charan Reddy** *(Lead)* | `24STUCHH010156` | **Project Lead & Data Pipeline Engineer** | Architecture, 44-Feature Pipeline, FastAPI Backend, Streamlit UI, Tree-SHAP |
-| **Jaiti Vijaya Shravani** | `24STUCHH010756` | **Statistical Modeling & Uncertainty Lead** | Intermittent Models (TSB, Croston-SBA, SARIMAX), Syntetos-Boylan Router, Conformal CQR |
-| **Vankayalapati Srujana** | `24STUCHH010749` | **Deep Learning & MLOps Engineer** | PyTorch LSTM Architecture, Global XGBoost, 10-Model Tournament, PSI/KS Drift Monitoring |
-| **Pottipothu V M Krishna Swamy** | `24STUCHH010207` | **Inventory Operations & Simulation Lead** | Stochastic $(R, S)$ Periodic Review Simulator, Dynamic Safety Stock, Cost Surface Modeling |
+| Team Member | Enrollment Number |
+| :--- | :--- |
+| **Pamdem Ravi Charan Reddy** *(Lead)* | `24STUCHH010156` |
+| **Jaiti Vijaya Shravani** | `24STUCHH010756` |
+| **Vankayalapati Srujana** | `24STUCHH010749` |
+| **Pottipothu V M Krishna Swamy** | `24STUCHH010207` |
 
 ### Project Guides
 * **Dr. Sukanta Das** — Associate Professor, Department of CSE, IcfaiTech

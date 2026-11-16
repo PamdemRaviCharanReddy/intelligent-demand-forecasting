@@ -12,36 +12,13 @@ Academic Year     : 2026
 GitHub Repository : https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting
 
 PROJECT TEAM:
-1. Pamdem Ravi Charan Reddy (Lead)
-   - Enrollment No : 24STUCHH010156
-   - Official Role : Lead Systems & Data Pipeline Engineer
-   - Key Work      : End-to-end architecture, 44-feature engineering pipeline, 
-                     FastAPI REST backend (Port 8000), Streamlit UI (Port 8501),
-                     Tree-SHAP explainability engine.
-
-2. Jaiti Vijaya Shravani
-   - Enrollment No : 24STUCHH010756
-   - Official Role : Statistical Modeling & Uncertainty Quantification Lead
-   - Key Work      : Intermittent demand models (TSB, Croston-SBA, SARIMAX), 
-                     Syntetos-Boylan demand pattern router, Conformalized 
-                     Quantile Regression (CQR) distribution-free intervals.
-
-3. Vankayalapati Srujana
-   - Enrollment No : 24STUCHH010749
-   - Official Role : Deep Learning & MLOps Monitoring Engineer
-   - Key Work      : PyTorch LSTM recurrent neural network, Global XGBoost, 
-                     10-model benchmark tournament evaluation, Population 
-                     Stability Index (PSI) & KS-test concept drift monitoring.
-
-4. Pottipothu V M Krishna Swamy
-   - Enrollment No : 24STUCHH010207
-   - Official Role : Inventory Operations & Simulation Lead
-   - Key Work      : Discrete-event (R, S) periodic review inventory simulator, 
-                     dynamic conformal safety stock optimization, asymmetric 
-                     retail cost surface modeling, service level validation.
+1. Pamdem Ravi Charan Reddy (Lead)  |  Enrollment No: 24STUCHH010156
+2. Jaiti Vijaya Shravani            |  Enrollment No: 24STUCHH010756
+3. Vankayalapati Srujana            |  Enrollment No: 24STUCHH010749
+4. Pottipothu V M Krishna Swamy     |  Enrollment No: 24STUCHH010207
 
 PROJECT GUIDES:
-- Dr. Sukanta Das       : Associate Professor, Dept. of CSE, IcfaiTech
+- Dr. Sukanta Das         : Associate Professor, Dept. of CSE, IcfaiTech
 - Dr. Sandeep Kumar Panda : Professor & Research Advisor, Dept. of CSE, IcfaiTech
 
 

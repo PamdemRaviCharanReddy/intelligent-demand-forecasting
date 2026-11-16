@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IDFS ReadMe</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.5;
+    padding: 30px;
+    max-width: 850px;
+    margin: 0 auto;
+    font-size: 13px;
+  }
+  h1 { font-size: 24px; color: #0f172a; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-bottom: 4px; }
+  h2 { font-size: 17px; color: #1e3a8a; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 22px; }
+  h3 { font-size: 14px; color: #334155; margin-top: 14px; }
+  blockquote {
+    border-left: 4px solid #3b82f6;
+    margin: 10px 0;
+    padding: 6px 12px;
+    background-color: #f1f5f9;
+    color: #475569;
+    font-style: italic;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 11.5px;
+  }
+  th, td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background-color: #f8fafc; }
+  code, pre {
+    background-color: #f1f5f9;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 11px;
+    border-radius: 3px;
+  }
+  pre {
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    overflow-x: auto;
+    line-height: 1.35;
+  }
+  p code { padding: 2px 4px; color: #0369a1; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin-bottom: 4px; }
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+</style>
+</head>
+<body>
+
+<h1>Intelligent Demand Forecasting System (IDFS)</h1>
+<blockquote>A Multi-Model Approach to Retail Demand Prediction, Conformal Uncertainty Quantification, Tree-SHAP Explainability, and Autonomous (R, S) Inventory Optimization</blockquote>
+
+<h2>Academic & Team Information</h2>
+<ul>
+  <li><strong>Institution:</strong> ICFAI Foundation for Higher Education (IFHE), Hyderabad</li>
+  <li><strong>Department:</strong> Department of Computer Science and Engineering, IcfaiTech</li>
+  <li><strong>Academic Year:</strong> 2026</li>
+  <li><strong>Repository:</strong> https://github.com/PamdemRaviCharanReddy/intelligent-demand-forecasting</li>
+</ul>
+
+<h3>Project Team</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Team Member</th>
+      <th>Enrollment No.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Pamdem Ravi Charan Reddy (Lead)</strong></td>
+      <td><code>24STUCHH010156</code></td>
+    </tr>
+    <tr>
+      <td><strong>Jaiti Vijaya Shravani</strong></td>
+      <td><code>24STUCHH010756</code></td>
+    </tr>
+    <tr>
+      <td><strong>Vankayalapati Srujana</strong></td>
+      <td><code>24STUCHH010749</code></td>
+    </tr>
+    <tr>
+      <td><strong>Pottipothu V M Krishna Swamy</strong></td>
+      <td><code>24STUCHH010207</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Project Guides</h3>
+<ul>
+  <li><strong>Dr. Sukanta Das</strong> &mdash; Associate Professor, Department of CSE, IcfaiTech</li>
+  <li><strong>Dr. Sandeep Kumar Panda</strong> &mdash; Professor & Research Advisor, Department of CSE, IcfaiTech</li>
+</ul>
+
+<h2>Executive Summary</h2>
+<p>
+The <strong>Intelligent Demand Forecasting System (IDFS)</strong> is an end-to-end machine learning and operational research platform that bridges the gap between predictive modeling and inventory replenishment decisions. Built on a dataset of <strong>219,000+ daily transactions across 15 retail stores and 20 seasonal products over 4 years</strong>, IDFS benchmarks 10 forecasting models, calibrates distribution-free uncertainty intervals, simulates inventory policies, explains predictions with Tree-SHAP, and monitors production data drift.
+</p>
+
+<h2>5 Core Research Novelties</h2>
+<ul>
+  <li><strong>N1: Cost-Optimized (R, S) Inventory Simulation</strong> &mdash; Discrete-event operational simulation evaluating carrying, stockout penalty, and replenishment costs under dynamic lead-time demand.</li>
+  <li><strong>N2: Conformalized Quantile Regression (CQR)</strong> &mdash; Distribution-free prediction intervals calibrated on held-out data to guarantee finite-sample coverage without assuming Gaussian errors.</li>
+  <li><strong>N3: Syntetos-Boylan Demand-Pattern Router</strong> &mdash; Automated time-series classification via Average Inter-demand Interval (ADI) and squared Coefficient of Variation (CV&sup2;) into <em>Smooth</em>, <em>Intermittent</em>, <em>Erratic</em>, and <em>Lumpy</em> demand quadrants.</li>
+  <li><strong>N4: Automated Drift Monitoring & MLOps Guardrails</strong> &mdash; Continuous tracking of covariate and concept shifts via Population Stability Index (PSI) and Kolmogorov-Smirnov (KS) tests.</li>
+  <li><strong>N5: Tree-SHAP Model Explainability</strong> &mdash; Game-theoretic feature attribution decomposing predictions into exact marginal contributions for complete transparency to store managers.</li>
+</ul>
+
+<h2>10-Model Benchmark Tournament Leaderboard</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Model Name</th>
+      <th>Paradigm</th>
+      <th>MAE</th>
+      <th>RMSE</th>
+      <th>WAPE (%)</th>
+      <th>MASE</th>
+      <th>90% Coverage</th>
+      <th>Pinball Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="font-weight: bold; background-color: #ecfdf5;">
+      <td>1</td>
+      <td>TSB (Teunter-Syntetos-Babai)</td>
+      <td>Statistical (Intermittent)</td>
+      <td>27.77</td>
+      <td>36.50</td>
+      <td>15.45%</td>
+      <td>0.777</td>
+      <td>82.1%</td>
+      <td>6.03</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Prophet (Meta)</td>
+      <td>Bayesian Additive</td>
+      <td>28.90</td>
+      <td>40.17</td>
+      <td>16.07%</td>
+      <td>0.808</td>
+      <td>84.8%</td>
+      <td>7.57</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Croston-SBA</td>
+      <td>Statistical (Intermittent)</td>
+      <td>32.13</td>
+      <td>42.23</td>
+      <td>17.87%</td>
+      <td>0.898</td>
+      <td>80.4%</td>
+      <td>7.39</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>PyTorch-LSTM</td>
+      <td>Deep Learning (RNN)</td>
+      <td>32.30</td>
+      <td>43.34</td>
+      <td>17.97%</td>
+      <td>0.903</td>
+      <td>80.4%</td>
+      <td>7.73</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Weighted Ensemble</td>
+      <td>Hybrid Combination</td>
+      <td>32.81</td>
+      <td>46.96</td>
+      <td>18.25%</td>
+      <td>0.917</td>
+      <td>83.0%</td>
+      <td>9.45</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Seasonal Naive (7-Day)</td>
+      <td>Heuristic Baseline</td>
+      <td>37.55</td>
+      <td>58.13</td>
+      <td>20.89%</td>
+      <td>1.050</td>
+      <td>85.7%</td>
+      <td>12.84</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>SARIMAX(1,0,0)x(0,1,0)7</td>
+      <td>Classical Time Series</td>
+      <td>37.61</td>
+      <td>58.15</td>
+      <td>20.92%</td>
+      <td>1.051</td>
+      <td>84.8%</td>
+      <td>12.89</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Demand Pattern Router (N3)</td>
+      <td>Meta-Learning Selection</td>
+      <td>38.14</td>
+      <td>49.48</td>
+      <td>21.21%</td>
+      <td>1.066</td>
+      <td>84.8%</td>
+      <td>7.46</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>XGBoost-Global</td>
+      <td>Gradient Boosted Trees</td>
+      <td>43.00</td>
+      <td>51.76</td>
+      <td>23.92%</td>
+      <td>1.202</td>
+      <td>81.2%</td>
+      <td>7.11</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Naive Baseline</td>
+      <td>Naive Drift</td>
+      <td>57.16</td>
+      <td>65.44</td>
+      <td>31.79%</td>
+      <td>1.598</td>
+      <td>92.9%</td>
+      <td>9.83</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>System Architecture & Workflow</h2>
+<pre>
+[ Raw Multi-Store Data ] (219,000+ Transactions across 15 Stores & 20 SKUs)
+           │
+           ▼
+[ Feature Engineering ] (44 Dimensions: Lags, Rolling Stats, Fourier Calendar, Promos)
+           │
+           ▼
+[ Model Tournament ] (10 Models: TSB, Croston, Prophet, LSTM, XGBoost, SARIMAX)
+           │
+           ▼
+[ Conformal Calibration ] (CQR 90% Distribution-Free Prediction Intervals)
+           │
+           ▼
+[ (R, S) Inventory Optimization ] (Dynamic Safety Stock & Order-Up-To Simulation)
+           │
+           ▼
+[ Decoupled Delivery ]
+   ├── FastAPI REST Backend (Port 8000: /predict, /benchmark, /explain, /drift)
+   └── Streamlit Multi-Page UI (Port 8501: Interactive Analytics & Decision Support)
+</pre>
+
+<h2>Product Catalog (20 Seasonal Products)</h2>
+<ul>
+  <li><strong>Monsoon:</strong> Umbrella, Raincoat, Waterproof Boots</li>
+  <li><strong>Summer:</strong> Air Conditioner, Ceiling Fan, Cold Drinks, Ice Cream, Sunscreen Lotion, Reusable Water Bottle</li>
+  <li><strong>Winter:</strong> Sweater, Winter Jacket, Thermal Wear, Room Heater, Winter Blankets, Coffee & Hot Cocoa, Electric Kettle</li>
+  <li><strong>Festive & Steady:</strong> Sweets Gift Box, Festive Decorative Lights, Sunglasses, Mosquito Repellent</li>
+</ul>
+
+<h2>Technology Stack</h2>
+<ul>
+  <li><strong>Programming Language:</strong> Python 3.12 (managed via uv)</li>
+  <li><strong>Frameworks & Libraries:</strong> FastAPI, Streamlit, PyTorch, Scikit-learn, XGBoost, Prophet, Statsmodels, Pandas, NumPy, SHAP</li>
+  <li><strong>Storage:</strong> Parquet, SQLite</li>
+  <li><strong>Testing:</strong> Pytest, Ruff</li>
+</ul>
+
+<h2>Installation & Quickstart</h2>
+<pre>
+# 1. Environment Setup
+uv venv --python 3.12 .venv
+.venv\Scripts\Activate.ps1
+uv pip install -e ".[dev]"
+
+# 2. Launch FastAPI Backend Service (Port 8000)
+uvicorn idfs.api.main:app --host 127.0.0.1 --port 8000 --reload
+# Swagger docs: http://127.0.0.1:8000/docs
+
+# 3. Launch Streamlit Frontend Dashboard (Port 8501)
+streamlit run streamlit_app.py --server.port 8501
+# Dashboard: http://localhost:8501
+</pre>
+
+</body>
+</html>
